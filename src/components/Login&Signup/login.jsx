@@ -1,7 +1,32 @@
 import logo from "./logo.png";
 import { Link } from "react-router-dom";
+import React, { useState} from 'react';
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 export default function Test() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const navigate = useNavigate()
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:3001/login', formData)
+    .then(result =>{console.log(result)
+      if(result.data === "Success"){
+        navigate('/home')
+      }
+    })
+    .catch(err=> console.log(err)) 
+  };
   const styles = {
     container: {
       display: "flex",
@@ -13,12 +38,11 @@ export default function Test() {
       width: "80%", 
       maxWidth: "300px", 
       backgroundColor: "#ffffff",
-      border: "2px solid black",
       borderRadius: "10px",
-      boxShadow: "2px 2px 2px 2px black",
+      border: "2px solid #000000",
       padding: "20px",
     },
-    username: {
+    email: {
       width: "100%",
       height: "40px",
       marginBottom: "15px",
@@ -70,27 +94,27 @@ export default function Test() {
 
   return (
     <div style={styles.container}>
-      <div className="Login" style={styles.Login}>
+      <form className="Login" style={styles.Login} onSubmit={handleSubmit}>
         <img src={logo} alt="" style={styles.img} />
 
-        <label htmlFor="my-name" style={styles.label}>
-          Username
+        <label htmlFor="my-email" style={styles.label}>
+          Email
         </label>
-        <input id="my-name" type="text" style={styles.username} />
+        <input id="Email" type="Email" style={styles.email} name="email" value={formData.email} onChange={handleChange} />
 
         <label htmlFor="my-password" style={styles.label}>
           Password
         </label>
-        <input id="my-password" type="password" style={styles.password} />
+        <input id="my-password" type="password" style={styles.password} name="password" value={formData.password} onChange={handleChange} />
 
-        <button style={styles.button}>SIGN IN</button>
+        <button style={styles.button}>Login</button>
 
         <p style={styles.forgotPassword}>Forget Password?</p>
 
         <p style={styles.signUp}>
           Don't have an account yet? <span style={{ color: "#5CB3FF" }}><Link to="/signup">Sign up</Link></span>
         </p>
-      </div>
+      </form>
     </div>
   );
 }
