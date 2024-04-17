@@ -66,16 +66,15 @@ export const Home = ({setResults, results}) => {
     const [dropoffFilteredResults, setDropoffFilteredResults] = useState([]);
 
     // Function to fetch data based on input value
-    const fetchDate = (value, setterFunction, setFilteredResultsFunction) => {
-        fetch("https://jsonplaceholder.typicode.com/users")
+    const fetchDistricts = (value, setterFunction, setFilteredResultsFunction) => {
+        fetch("https://api-url/districts") // Replace "https://api-url/districts" with the actual API endpoint
             .then((response) => response.json())
             .then((json) => {
-                const filteredResults = json.filter((user) => {
+                const filteredResults = json.districts.filter((district) => {
                     return (
                         value &&
-                        user &&
-                        user.name &&
-                        user.name.toLowerCase().includes(value.toLowerCase())
+                        district &&
+                        district.toLowerCase().includes(value.toLowerCase())
                     );
                 });
                 setFilteredResultsFunction(filteredResults);
@@ -89,7 +88,7 @@ export const Home = ({setResults, results}) => {
             setFilteredResultsFunction([]);
             return;
         }
-        fetchDate(value, setterFunction, setFilteredResultsFunction);
+        fetchDistricts(value, setterFunction, setFilteredResultsFunction);
     };
 
     // Function to handle click on suggestion
@@ -113,8 +112,8 @@ export const Home = ({setResults, results}) => {
                     />
                     {pickupFilteredResults.length > 0 && (
                         <ul className="pickup_suggestions">
-                            {pickupFilteredResults.map((user, index) => (
-                                <li key={index} onClick={() => handleSuggestionClick(user.name, setPickupInput, setPickupFilteredResults)}>
+                            {pickupFilteredResults.map((district, index) => (
+                                <li key={index} onClick={() => handleSuggestionClick(district, setPickupInput, setPickupFilteredResults)}>
                                     {user.name}
                                 </li>
                             ))}
@@ -129,8 +128,8 @@ export const Home = ({setResults, results}) => {
                     />
                     {dropoffFilteredResults.length > 0 && (
                         <ul className="dropoff_suggestions">
-                            {dropoffFilteredResults.map((user, index) => (
-                                <li key={index} onClick={() => handleSuggestionClick(user.name, setDropoffInput, setDropoffFilteredResults)}>
+                            {dropoffFilteredResults.map((district, index) => (
+                                <li key={index} onClick={() => handleSuggestionClick(district, setDropoffInput, setDropoffFilteredResults)}>
                                     {user.name}
                                 </li>
                             ))}
@@ -241,4 +240,6 @@ Home.propTypes = {
     results: PropTypes.array.isRequired, 
   };
 export default Home;
+
+
 
