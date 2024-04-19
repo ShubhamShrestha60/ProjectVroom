@@ -1,22 +1,29 @@
 
 .active{
-    background-color: #da1515;
+    background-color: rgba(128, 0, 0, 0.9);
 }
 
-
+.main_header{
+    background-color: rgba(128, 0, 0, 0.9);
+}
+.nav-container{
+   max-width: 1200px;
+   margin: auto;
+}
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(128, 0, 0, 0.9);
+    
     color: white;
     position: relative;
     top: 0;
+   
 }
 
 nav .title {
     font-size: 2.4rem;
-    margin: 1rem;
+    margin: 0.8rem;
     font-weight: bold;
     text-decoration: none;
     color: white;
@@ -52,7 +59,7 @@ nav .menu {
     justify-content: space-between;
     width: 2.25rem;
     height: 2rem;
-    z-index: 1001;
+    
 }
 
 nav .menu span {
@@ -66,11 +73,13 @@ nav .menu span {
 @media (max-width: 1080px) {
     nav .menu {
         display: flex;
+        z-index: 1001;
     }
 
     nav {
         flex-direction: column;
         align-items: flex-start;
+        z-index: 1001;
     }
 
     nav ul {
@@ -78,15 +87,18 @@ nav .menu span {
         flex-direction: column;
         width: 100%;
         margin-bottom: 0.25rem;
+        z-index: 1001;
     }
 
     nav ul.open {
         display: flex;
+        z-index: 1001;
     }
 
     nav ul li {
         width: 100%;
         text-align: center;
+        z-index: 1001;
     }
 
     nav ul li a {

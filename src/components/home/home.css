@@ -2,12 +2,17 @@
 *{
     font-family: 'Poppins', sans-serif;
 }
+
+.sabse_main{
+    /* background-color: rgba(128, 0, 0, 0.9); */
+    background-color: black;
+}
 .main {
     
     
     display: grid;
     
-    max-width: 1200px;
+    
     grid-template-rows: auto auto auto auto;
     grid-gap: 40px;
     margin: auto; 
@@ -19,10 +24,11 @@
 
 
 
+
 .search {
     
-    max-width: 1150px;
-    height: 80px;
+    max-width: 1200px;
+    height: 72px;
     background-color: orange;
     align-items: center;
     display: flex;
@@ -30,23 +36,26 @@
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
     gap: 0.5vh;
     
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 7px;
+    padding-right: 7px;
     position: relative;
     margin: auto;
 }
 
 .input {
-    height: 60px;
-    flex: 1;
+    height: 63px;
+    flex: 1.2;
     border-radius: 5px;
     border: 1px solid #ccc;
     text-align: center;
     margin: auto;
-    font-size: 14px;
+    font-size: 17px;
     font-family: 'Poppins', sans-serif;
     
     box-sizing: border-box;
+}
+.input:hover{
+    border: 1px solid maroon;
 }
 
 .pickup{
@@ -64,10 +73,15 @@
 .search_button{
     flex: 0.1;
     margin: auto;
+    background-color: rgba(167, 13, 13, 0.9);
+    color: white;
+}
+.search_button:hover{
+    background-color: rgba(128, 0, 0, 0.9);
 }
 
 button {
-    height: 60px;
+    height: 63px;
     border-radius: 5px;
     border: 1px solid #ccc;
     background-color: #fff;
@@ -102,15 +116,47 @@ button {
     left: -200px;
     z-index: 1000;
     color: black;
-    
-    
+   
 }
+.pickup_error-message{
+    position: absolute;
+    top: calc(80%);
+    /* left: -200px; */
+    z-index: 1000;
+    color: red;
+    font-family: 'Poppins', sans-serif;
+}
+.dropoff_error-message{
+    position: absolute;
+    top: calc(80%);
+    left: 450px;
+    z-index: 1000;
+    color: red;
+    font-family: 'Poppins', sans-serif;
+}
+.timegap_error-message{
+    position: absolute;
+    top: calc(100%);
+   font-size: 14px;
+    z-index: 1000;
+    color: red;
+    font-family: 'Poppins', sans-serif;
+    width: 18vw;
+    right: 5px;
+}
+
 
 .guide {
     color: black;
     margin-top: 20px;
     width: 100%;
-    background-color: white;
+    max-width: 1200px;
+    margin: auto;
+    
+    
+}
+.guide_main{
+    background-color:white; 
     
 }
 
@@ -187,22 +233,26 @@ button {
         min-width: 250px;
         
         margin: auto;
+        z-index: 0;
     }
 
     .searchMain{
         width: 90vw;
         margin: auto;
+        z-index: 1;
     }
 
     .search{
         height: 300px;
         display: flex;
         flex-direction: column;
+        left: -2vw;
         width: 90vw;
         margin: auto;
         align-items: center;
         padding-top: 5px;
         padding-bottom: 5px;
+        z-index: 2;
         
     }
 
@@ -284,6 +334,21 @@ button {
         width: 89vw;
         
     }
+    .pickup_error-message{
+    position: absolute;
+    z-index: 1000;
+    color: red;
+   
+    font-family: 'Poppins', sans-serif;
+}
+.dropoff_error-message{
+    position: absolute;
+    top: calc(80%);
+    left: 450px;
+    z-index: 1000;
+    color: red;
+    font-family: 'Poppins', sans-serif;
+}
     
     
 } 

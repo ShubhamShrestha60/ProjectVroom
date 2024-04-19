@@ -1,15 +1,21 @@
 import { useState } from "react";
 import Calendar from 'react-calendar';
 import logo from "./card.png";
+import logo1 from "./location.png";
+import logo2 from "./car.png";
+import logo3 from "./car.jpg"
 import 'react-calendar/dist/Calendar.css';
 import './home.css';
 import PropTypes from 'prop-types'; // Import PropTypes
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 export const Home = ({setResults, results}) => {
-    const [pickupDate, setPickupDate] = useState(new Date());
+    const currentDate = new Date();
+    const [pickupDate, setPickupDate] = useState(currentDate);
     const [pickupTime, setPickupTime] = useState('12:00');
-    const [dropoffDate, setDropoffDate] = useState(new Date());
-    const [dropoffTime, setDropoffTime] = useState('12:00');
+    const [dropoffDate, setDropoffDate] = useState(currentDate);
+    const [dropoffTime, setDropoffTime] = useState('13:00'); // Set default drop-off time to be one hour after pick-up time
 
     const [showPickupCalendar, setShowPickupCalendar] = useState(false);
     const [showDropoffCalendar, setShowDropoffCalendar] = useState(false);
@@ -41,7 +47,8 @@ export const Home = ({setResults, results}) => {
 
     const handlePickupDateChange = (date) => {
         setPickupDate(date);
-        togglePickupCalendar();
+    setDropoffDate(date); // Set dropoff date to pickup date initially
+    togglePickupCalendar();
     };
 
     const handleDropoffDateChange = (date) => {
@@ -65,30 +72,36 @@ export const Home = ({setResults, results}) => {
     const [dropoffInput, setDropoffInput] = useState("");
     const [dropoffFilteredResults, setDropoffFilteredResults] = useState([]);
 
+    const [pickupError, setPickupError] = useState(""); // Pickup location error message
+    const [dropoffError, setDropoffError] = useState(""); // Dropoff location error message
+    const [timeGapError, setTimeGapError] = useState(""); // Time gap error message
+
     // Function to fetch data based on input value
-    const fetchDistricts = (value, setterFunction, setFilteredResultsFunction) => {
-        fetch("https://api-url/districts") // Replace "https://api-url/districts" with the actual API endpoint
+    const fetchDate = (value, setterFunction, setFilteredResultsFunction) => {
+        fetch("https://jsonplaceholder.typicode.com/users")
             .then((response) => response.json())
             .then((json) => {
-                const filteredResults = json.districts.filter((district) => {
+                const filteredResults = json.filter((user) => {
                     return (
                         value &&
-                        district &&
-                        district.toLowerCase().includes(value.toLowerCase())
+                        user &&
+                        user.name &&
+                        user.name.toLowerCase().includes(value.toLowerCase())
                     );
                 });
                 setFilteredResultsFunction(filteredResults);
             });
     };
 
-    // Function to handle input change and fetch suggestions
+    
     const handleInputChange = (value, setterFunction, setFilteredResultsFunction) => {
-        setterFunction(value);
-        if (value.trim() === "") {
+        const lowercaseValue = value.toLowerCase();
+        setterFunction(lowercaseValue);
+        if (lowercaseValue.trim() === "") {
             setFilteredResultsFunction([]);
             return;
         }
-        fetchDistricts(value, setterFunction, setFilteredResultsFunction);
+        fetchDate(lowercaseValue, setterFunction, setFilteredResultsFunction);
     };
 
     // Function to handle click on suggestion
@@ -97,11 +110,70 @@ export const Home = ({setResults, results}) => {
         setFilteredResultsFunction([]);
     };
 
+    const navigate = useNavigate()
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        // Check for empty pickup location
+        if (pickupInput.trim() === "") {
+            setPickupError("Pickup location cannot be empty");
+            return;
+        } else {
+            setPickupError(""); // Clear pickup location error
+        }
+
+        // Check for empty dropoff location
+        if (dropoffInput.trim() === "") {
+            setDropoffError("Dropoff location cannot be empty");
+            return;
+        } else {
+            setDropoffError(""); // Clear dropoff location error
+        }
+
+        // Check for matching pickup and dropoff times and dates
+        const pickupDateTime = new Date(`${pickupDate.toDateString()} ${pickupTime}`);
+        const dropoffDateTime = new Date(`${dropoffDate.toDateString()} ${dropoffTime}`);
+
+        if (pickupDateTime >= dropoffDateTime) {
+            setTimeGapError("Dropoff time must be later than pickup time");
+            return;
+        } else {
+            setTimeGapError(""); // Clear time gap error
+        }
+
+        const timeDifference = Math.abs(dropoffDateTime - pickupDateTime) / (1000 * 60 * 60); // Difference in hours
+
+        if (timeDifference < 1) {
+            setTimeGapError("There must be atleast one hour between pickup and dropoff");
+            return;
+        } else {
+            setTimeGapError(""); // Clear time gap error
+        }
+
+        axios.post('http://localhost:3001/home', { Location: pickupInput })
+            .then(result => {
+                console.log(result);
+                if (result.data) {
+                    setResults(result.data);
+                    navigate('/cars');
+                } else {
+                    console.log("No cars found for the specified location");
+                }
+            })
+            .catch(err => console.log(err));
+    };
+
+
+
     return (
-        <div className="main">
-            <div className="search_main">
-                <h1 >Car hire for any kind of trip</h1>
-                <p style={{marginTop:"-20px",marginBottom:"40px"}}>Great deals at great prices</p>
+        
+    <div className="main">
+        
+            <div className="search_main" style={{marginTop:"50px"}}>
+                
+                <h1 style={{maxWidth:"1200px", margin:"auto"}} >Car hire for any kind of trip</h1>
+                <p style={{marginTop:"-20px",marginBottom:"40px", margin:"auto",maxWidth:"1200px"}}>Great deals at great prices</p>
                 <div className="search">
                 <input
                         type="text"
@@ -110,10 +182,11 @@ export const Home = ({setResults, results}) => {
                         value={pickupInput}
                         onChange={(e) => handleInputChange(e.target.value, setPickupInput, setPickupFilteredResults)}
                     />
+                    {pickupError && <p className="pickup_error-message">{pickupError}</p>}
                     {pickupFilteredResults.length > 0 && (
                         <ul className="pickup_suggestions">
-                            {pickupFilteredResults.map((district, index) => (
-                                <li key={index} onClick={() => handleSuggestionClick(district, setPickupInput, setPickupFilteredResults)}>
+                            {pickupFilteredResults.map((user, index) => (
+                                <li key={index} onClick={() => handleSuggestionClick(user.name, setPickupInput, setPickupFilteredResults)}>
                                     {user.name}
                                 </li>
                             ))}
@@ -126,10 +199,11 @@ export const Home = ({setResults, results}) => {
                         value={dropoffInput}
                         onChange={(e) => handleInputChange(e.target.value, setDropoffInput, setDropoffFilteredResults)}
                     />
+                    {dropoffError && <p className="dropoff_error-message">{dropoffError}</p>}
                     {dropoffFilteredResults.length > 0 && (
                         <ul className="dropoff_suggestions">
-                            {dropoffFilteredResults.map((district, index) => (
-                                <li key={index} onClick={() => handleSuggestionClick(district, setDropoffInput, setDropoffFilteredResults)}>
+                            {dropoffFilteredResults.map((user, index) => (
+                                <li key={index} onClick={() => handleSuggestionClick(user.name, setDropoffInput, setDropoffFilteredResults)}>
                                     {user.name}
                                 </li>
                             ))}
@@ -144,7 +218,11 @@ export const Home = ({setResults, results}) => {
                         </button>
                         {showPickupCalendar && (
                             <div className="calendarContainer">
-                                <Calendar onChange={handlePickupDateChange} value={pickupDate} />
+                                 <Calendar
+                                    onChange={handlePickupDateChange}
+                                    value={pickupDate}
+                                    minDate={currentDate}
+                                />
                             </div>
                         )}
                         
@@ -171,7 +249,11 @@ export const Home = ({setResults, results}) => {
                         </button>
                         {showDropoffCalendar && (
                             <div className="calendarContainer">
-                                <Calendar onChange={handleDropoffDateChange} value={dropoffDate} />
+                                <Calendar
+                                    onChange={handleDropoffDateChange}
+                                    value={dropoffDate}
+                                    minDate={pickupDate}
+                                />
                             </div>
                         )}
 
@@ -189,29 +271,35 @@ export const Home = ({setResults, results}) => {
                                 ))}
                             </div>
                         )}
+                        {timeGapError && <p className="timegap_error-message">{timeGapError}</p>}
                     </div>
-
-                    <button style={{ backgroundColor: 'maroon', color: 'white' }} className="search_button">
+                    
+                    <button className="search_button" onClick={handleSubmit}>
                         Search
                         
                     </button>
                 </div>
             </div>
+
+            <div className="guide_main">
             <div className="guide">
                 <h3>How it works</h3>
                 <div className="content">
                     <div>
-                        <img src={logo} alt="" className="img" />
-                        <h3 style={{margin:"-10px 0px 0px 11px"}}>Book and Pay</h3>
-                        <p style={{margin:"0 0 0 11px"}}>Pick your favourite car,time <br />
-                           and place.
-                        </p>
+                        
+                        <img src={logo1} alt="" className="img" />
+                        <h3 style={{margin:"-10px 0px 0px 11px"}}>Pickup and Dropoff</h3>
+                        <p style={{margin:"0 0 0 11px"}}>Select the pickup and dropoff<br />
+                           point according to your ease.
+                           </p>
+                        
+                        
                     </div>
                     <div>
-                        <img src={logo} alt="" className="img" />
-                        <h3 style={{margin:"-10px 0px 0px 11px"}}>Book and Pay</h3>
-                        <p style={{margin:"0 0 0 11px"}}>Pick your favourite car,time <br />
-                           and place.
+                    <img src={logo2} alt="" className="img" />
+                    <h3 style={{margin:"-10px 0px 0px 11px"}}>Select the best car</h3>
+                        <p style={{margin:"0 0 0 11px"}}>Select the best car that matches<br />
+                        your criteria.
                            </p>
                     </div>
                     <div>
@@ -222,15 +310,18 @@ export const Home = ({setResults, results}) => {
                         </p>
                     </div>
                     <div>
-                    <img src={logo} alt="" className="img" />
-                        <h3 style={{margin:"-10px 0px 0px 11px"}}>Book and Pay</h3>
-                        <p style={{margin:"0 0 0 11px"}}>Pick your favourite car,time <br />
-                           and place.
+                    <img src={logo3} alt="" className="img" />
+                        <h3 style={{margin:"-10px 0px 0px 11px"}}>Enjoy your ride</h3>
+                        <p style={{margin:"0 0 0 11px"}}>Enjoy your ride to the fullest<br />
+                           with vroom cars.
                         </p>
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+            </div>
+        
+        
     );
 }
 
@@ -240,6 +331,8 @@ Home.propTypes = {
     results: PropTypes.array.isRequired, 
   };
 export default Home;
+
+
 
 
 
