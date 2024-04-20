@@ -2,7 +2,6 @@ const express = require("express");
 const multer = require('multer');
 const mongoose = require("mongoose");
 const cors = require("cors");
-const router = express.Router();
 const userModel = require('./models/user');
 const upload = multer({ dest: 'uploads/' });
 const Car = require ('./models/carModel');
@@ -41,10 +40,10 @@ app.post('/register', (req, res) => {
 
 app.post('/addCar', upload.single('image'), async (req, res) => {
     try {
-        const { make, model, year, color, licensePlate } = req.body;
+        const { carID, brand, fuelType, transmissionType, segment, price, location, availability, condition } = req.body;
         const imageUrl = req.file ? req.file.path : null;
         
-        const newCar = new Car({ make, model, year, color, licensePlate, imageUrl });
+        const newCar = new Car({ carID, brand, fuelType, transmissionType, segment, price, location, availability, condition, imageUrl });
         await newCar.save();
 
         res.status(201).json({ message: 'Car added Successfully', car: newCar });

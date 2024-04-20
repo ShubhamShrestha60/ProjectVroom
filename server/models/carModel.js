@@ -2,23 +2,41 @@ const mongoose = require('mongoose');
 
 // Define the car schema
 const carSchema = new mongoose.Schema({
-    make: {
+    carID: {
+        type: Number,
+        required: true
+    },
+    brand: {
         type: String,
         required: true
     },
-    model: {
+    fuelType: {
+        type: String,
+        enum: ['Petrol', 'Diesel'],
+        required: true
+    },
+    transmissionType: {
+        type: String,
+        enum: ['Manual', 'Automatic'],
+        required: true
+    },
+    segment: {
         type: String,
         required: true
     },
-    year: {
+    price: {
+        type: Number,
+        required: true
+    },
+    location: {
         type: String,
         required: true
     },
-    color: {
-        type: String,
+    availability: {
+        type: Boolean,
         required: true
     },
-    licensePlate: {
+    condition: {
         type: String,
         required: true
     },
@@ -26,7 +44,6 @@ const carSchema = new mongoose.Schema({
         type: String
     }
 });
-
 
 const Car = mongoose.model('Car', carSchema);
 module.exports = Car;
