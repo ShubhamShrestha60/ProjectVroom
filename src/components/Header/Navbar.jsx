@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
-  const hiddenPaths = ['/login', '/signup', '/dashboard', '/bookings', '/settings',"/addCar"];;
+  const hiddenPaths = ['/login', '/signup'];
 
   // Check if the current location is in the array of hidden paths
   const isHidden = hiddenPaths.includes(location.pathname);
@@ -15,18 +15,14 @@ export const Navbar = () => {
   if (isHidden) {
     return null;
   }
-  const handleMenuClick = (event) => {
-    event.preventDefault();
-    setMenuOpen(!menuOpen);
-  };
-  
 
   return (
+    <div className="main_header">
     <nav className="nav-container">
       <Link to="/" className="title">
         Vroom
       </Link>
-      <div className="menu" onClick ={handleMenuClick}>
+      <div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
         <span></span>
         <span></span>
         <span></span>
@@ -39,9 +35,11 @@ export const Navbar = () => {
           <NavLink to="/how-it-works">How it works?</NavLink>
         </li>
         <li>
-          <NavLink to="/login">Sign in </NavLink>
+          <NavLink to="/login">Log out </NavLink>
         </li>
       </ul>
     </nav>
+    </div>
   );
 };
+export default Navbar;

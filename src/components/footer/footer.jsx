@@ -5,7 +5,7 @@ import "./footer.css";
 export const Footer = () => {
   const location = useLocation();
   // Define an array of paths where you want to hide the footer
-  const hiddenPaths = ['/login', '/signup', '/dashboard', '/bookings','/settings','/addCar'];
+  const hiddenPaths = ['/login', '/signup'];
 
   // Check if the current location is in the array of hidden paths
   const isHidden = hiddenPaths.includes(location.pathname);
@@ -15,6 +15,7 @@ export const Footer = () => {
     return null;
   }
   return (
+    <div className='footer_main'>
     <footer className="footer">
       <div className="container">
         <div className="left-content">
@@ -35,5 +36,7 @@ export const Footer = () => {
       </div>
       
     </footer>
+    </div>
   );
-}
+} 
+export default Footer;

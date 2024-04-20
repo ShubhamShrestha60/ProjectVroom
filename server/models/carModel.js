@@ -1,49 +1,54 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
-// Define the car schema
+// // Define the car schema
+// const carSchema = new mongoose.Schema({
+//     make: {
+//         type: String,
+//         required: true
+//     },
+//     model: {
+//         type: String,
+//         required: true
+//     },
+//     year: {
+//         type: String,
+//         required: true
+//     },
+//     color: {
+//         type: String,
+//         required: true
+//     },
+//     licensePlate: {
+//         type: String,
+//         required: true
+//     },
+//     imageUrl: {
+//         type: String
+//     }
+// });
+
+
+// const Car = mongoose.model('Car', carSchema);
+// module.exports = Car;
+
+
+/*global require, module*/
+const mongoose = require ('mongoose')
+
 const carSchema = new mongoose.Schema({
-    carID: {
-        type: Number,
-        required: true
-    },
-    brand: {
-        type: String,
-        required: true
-    },
-    fuelType: {
-        type: String,
-        enum: ['Petrol', 'Diesel'],
-        required: true
-    },
-    transmissionType: {
-        type: String,
-        enum: ['Manual', 'Automatic'],
-        required: true
-    },
-    segment: {
-        type: String,
-        required: true
-    },
-    price: {
-        type: Number,
-        required: true
-    },
-    location: {
-        type: String,
-        required: true
-    },
-    availability: {
-        type: Boolean,
-        required: true
-    },
-    condition: {
-        type: String,
-        required: true
-    },
-    imageUrl: {
-        type: String
-    }
-});
+      CarId: Number,
+      Brand: String,
+      FuelType: String,
+      TransistionType: String,
+      Segment: String,
+      Price: Number,
+      ModelYear: Number,
+      Location: String,
+      Availability: Boolean,
+      Condition: String,
+      ImageLocation: String
+})
 
-const Car = mongoose.model('Car', carSchema);
-module.exports = Car;
+const userModel = mongoose.model('Car', carSchema);
+
+module.exports = userModel;
