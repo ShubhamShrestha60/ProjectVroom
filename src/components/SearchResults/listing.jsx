@@ -72,7 +72,7 @@ const listing = ({ results }) => {
               ))}
             </div>
           ) : (
-            <div>No cars found</div>
+            <div></div>
           )}
         </div>
       );
