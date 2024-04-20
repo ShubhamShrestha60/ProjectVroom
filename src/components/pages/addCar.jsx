@@ -12,13 +12,19 @@ const AddCar = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    const availability =e.target.availability.checked;
+    const isAvailable = availability ? true : false;
     // Create FormData object to append form data
     const formData = new FormData();
-    formData.append('make', e.target.make.value);
-    formData.append('model', e.target.model.value);
-    formData.append('year', e.target.year.value);
-    formData.append('color', e.target.color.value);
-    formData.append('licensePlate', e.target.licensePlate.value);
+    formData.append('carID', e.target.carID.value);
+    formData.append('brand', e.target.brand.value);
+    formData.append('fuelType', e.target.fuelType.value);
+    formData.append('transmissionType', e.target.transmissionType.value);
+    formData.append('segment', e.target.segment.value);
+    formData.append('price', e.target.price.value);
+    formData.append('location', e.target.location.value);
+    formData.append('availability', isAvailable);
+    formData.append('condition', e.target.condition.value);
     formData.append('image', image); // Append image file
     
     try {
@@ -43,24 +49,46 @@ const AddCar = () => {
       <h3 className="add-car__title">Add a New Car</h3>
       <form className="add-car__form" onSubmit={handleSubmit}>
         <div className="add-car__form-group">
-          <label htmlFor="make">Make:</label>
-          <input type="text" id="make" name="make" />
+          <label htmlFor="carID">Car ID:</label>
+          <input type="number" id="carID" name="carID" />
         </div>
         <div className="add-car__form-group">
-          <label htmlFor="model">Model:</label>
-          <input type="text" id="model" name="model" />
+          <label htmlFor="brand">Brand:</label>
+          <input type="text" id="brand" name="brand" />
         </div>
         <div className="add-car__form-group">
-          <label htmlFor="year">Year:</label>
-          <input type="number" id="year" name="year" />
+          <label htmlFor="fuelType">Fuel Type:</label>
+          <select id="fuelType" name="fuelType">
+            <option value="Petrol">Petrol</option>
+            <option value="Diesel">Diesel</option>
+          </select>
         </div>
         <div className="add-car__form-group">
-          <label htmlFor="color">Color:</label>
-          <input type="text" id="color" name="color" />
+          <label htmlFor="transmissionType">Transmission Type:</label>
+          <select id="transmissionType" name="transmissionType">
+            <option value="Manual">Manual</option>
+            <option value="Automatic">Automatic</option>
+          </select>
         </div>
         <div className="add-car__form-group">
-          <label htmlFor="licensePlate">License Plate:</label>
-          <input type="text" id="licensePlate" name="licensePlate" />
+          <label htmlFor="segment">Segment:</label>
+          <input type="text" id="segment" name="segment" />
+        </div>
+        <div className="add-car__form-group">
+          <label htmlFor="price">Price:</label>
+          <input type="number" id="price" name="price" />
+        </div>
+        <div className="add-car__form-group">
+          <label htmlFor="location">Location:</label>
+          <input type="text" id="location" name="location" />
+        </div>
+        <div className="add-car__form-group">
+          <label htmlFor="availability">Availability:</label>
+          <input type="checkbox" id="availability" name="availability" value="true"/>
+        </div>
+        <div className="add-car__form-group">
+          <label htmlFor="condition">Condition:</label>
+          <input type="text" id="condition" name="condition" />
         </div>
         <div className="add-car__form-group">
           <label htmlFor="image">Image:</label>
