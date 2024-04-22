@@ -115,6 +115,51 @@ app.post('/addCar', upload.single('image'), async (req, res) => {
         res.status(500).json({ error: 'internal server error' });
     }
 });
+app.post("/adminLogin", (req, res) => {
+    const { email, password } = req.body;
+    admModel.findOne({ email: email })
+    .then(admin => {
+        if (admin) {
+            if (admin.password === password) {
+                res.json("Success");
+            } else {
+                res.json("Incorrect password");
+            }
+        } else {
+            res.json("No record existed");
+        }
+    })
+    .catch(error => {
+        res.status(500).json("Internal server error");
+    });
+});
+
+app.post('/signup', (req, res) => {
+    const { password, confirmPassword } = req.body;
+    if (password !== confirmPassword) {
+        return res.status(400).json("Passwords do not match");
+    }
+
+    admModel.create(req.body)
+    .then(admin => res.json(admin))
+    .catch(err => res.status(500).json(err));
+});
+app.use(bodyParser.json());
+
+app.delete('/deleteCar/:carID', async (req, res) => {
+  try {
+    const carID = req.params.carID;
+    const deletedCar = await Car.findOneAndDelete({ carID: carID });
+
+    if (!deletedCar) {
+      return res.status(404).json({ message: 'Car not found' });
+    }
+
+    res.json({ message: 'Car deleted successfully', deletedCar });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete car', error: error.message });
+  }
+});
 
 // Endpoint to search for available vehicles based on pickup location
 app.post("/home", async (req, res) => {
