@@ -59,6 +59,7 @@ const Listing = ({ results }) => {
               <img
                 style={styles.img}
                 src={`http://localhost:3002/${car.imageUrl}`}
+                
                 alt={`Image of ${car.brand}`}
               />
               <div className="first" style={styles.first}>

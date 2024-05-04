@@ -13,7 +13,7 @@ const AdminLogin = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:3001/adminLogin', {email, password})
+    axios.post('http://localhost:3002/adminLogin', {email, password})
     .then(result =>{console.log(result)
       if(result.data === "Success"){
         navigate('/dashboard')

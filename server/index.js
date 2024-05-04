@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const userModel = require('./models/user');
 const upload = multer({ dest: 'uploads/' });
-const Car = require ('./models/carModel');
+const Car = require('./models/carModel');
 const admModel = require('./models/admin');
 const bookingModel = require('./models/booking');
 const app = express();
@@ -21,34 +21,34 @@ mongoose.connect("mongodb://localhost:27017/User");
 app.post("/login", (req, res) => {
     const { email, password } = req.body;
     userModel.findOne({ email: email })
-    .then(user => {
-        if (user) {
-            if (user.password === password) {
-                res.json("Success");
+        .then(user => {
+            if (user) {
+                if (user.password === password) {
+                    res.json("Success");
 
+                } else {
+                    res.json("the password is incorrect");
+                }
             } else {
-                res.json("the password is incorrect");
+                req.json("No record existed");
             }
-        } else {
-            req.json("No record existed");
-        }
-    })
-    .catch(error => {
-        res.status(500).json("Internal server error");
-    });
+        })
+        .catch(error => {
+            res.status(500).json("Internal server error");
+        });
 });
 
 app.post('/register', (req, res) => {
     userModel.create(req.body)
-    .then(Client => res.json(Client))
-    .catch(err => res.json(err));
+        .then(Client => res.json(Client))
+        .catch(err => res.json(err));
 });
 
 app.post('/addCar', upload.single('image'), async (req, res) => {
     try {
         const { carID, brand, fuelType, transitionType, segment, price, location, availability, condition } = req.body;
         const imageUrl = req.file ? req.file.path : null;
-        
+
         const newCar = new Car({ carID, brand, fuelType, transitionType, segment, price, location, availability, condition, imageUrl });
         await newCar.save();
 
@@ -66,21 +66,21 @@ app.post('/addCar', upload.single('image'), async (req, res) => {
 app.post("/adminLogin", (req, res) => {
     const { email, password } = req.body;
     admModel.findOne({ email: email })
-    .then(admin => {
-        if (admin) {
-            if (admin.password === password) {
-                res.json("Success");
-                
+        .then(admin => {
+            if (admin) {
+                if (admin.password === password) {
+                    res.json("Success");
+
+                } else {
+                    res.json("Incorrect password");
+                }
             } else {
-                res.json("Incorrect password");
+                res.json("No record existed");
             }
-        } else {
-            res.json("No record existed");
-        }
-    })
-    .catch(error => {
-        res.status(500).json("Internal server error");
-    });
+        })
+        .catch(error => {
+            res.status(500).json("Internal server error");
+        });
 });
 
 app.post('/signup', (req, res) => {
@@ -90,24 +90,24 @@ app.post('/signup', (req, res) => {
     }
 
     userModel.create(req.body)
-    .then(admin => res.json(admin))
-    .catch(err => res.status(500).json(err));
+        .then(admin => res.json(admin))
+        .catch(err => res.status(500).json(err));
 });
 app.use(bodyParser.json());
 
 app.delete('/deleteCar/:carID', async (req, res) => {
-  try {
-    const carID = req.params.carID;
-    const deletedCar = await Car.findOneAndDelete({ carID: carID });
+    try {
+        const carID = req.params.carID;
+        const deletedCar = await Car.findOneAndDelete({ carID: carID });
 
-    if (!deletedCar) {
-      return res.status(404).json({ message: 'Car not found' });
+        if (!deletedCar) {
+            return res.status(404).json({ message: 'Car not found' });
+        }
+
+        res.json({ message: 'Car deleted successfully', deletedCar });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to delete car', error: error.message });
     }
-
-    res.json({ message: 'Car deleted successfully', deletedCar });
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to delete car', error: error.message });
-  }
 });
 
 
@@ -115,7 +115,7 @@ app.delete('/deleteCar/:carID', async (req, res) => {
 app.post("/home", async (req, res) => {
     try {
         const { location } = req.body;
-        
+
         // Query the database to find available vehicles based on the pickup location and availability
         const availableVehicles = await Car.find({
             location: location,
@@ -129,7 +129,7 @@ app.post("/home", async (req, res) => {
             res.json(availableVehicles); // Send the list of available vehicles as response
         } else {
             // If no vehicles are found, send a message indicating 0 cars found
-           
+
             res.json({ message: "0 cars found" });
         }
     } catch (error) {
@@ -137,7 +137,7 @@ app.post("/home", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
- 
+
 app.post('/carDetails', async (req, res) => {
     try {
         const { carID } = req.body;
@@ -157,14 +157,14 @@ app.post('/carDetails', async (req, res) => {
 
 app.post('/booking', upload.single('image'), async (req, res) => {
     try {
-        const { email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate} = req.body;
+        const { email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate } = req.body;
         const LicensePhoto = req.file ? req.file.path : null;
-        
-        const newBooking = new bookingModel({ email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate, LicensePhoto});
+
+        const newBooking = new bookingModel({ email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate, LicensePhoto });
         await newBooking.save();
 
         res.status(201).json({ message: 'Booking Successfull', booking: newBooking });
-        
+
     } catch (error) {
         res.status(500).json({ error: 'internal server error' });
     }
@@ -175,7 +175,7 @@ app.post('/bookingDetails', async (req, res) => {
         const { email } = req.body;
         const bookingDetail = await bookingModel.find({
             email: email,
-            
+
         });
         if (!bookingDetail) {
             return res.status(404).json({ error: 'No such booking found' });
