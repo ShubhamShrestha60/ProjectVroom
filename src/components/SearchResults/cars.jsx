@@ -22,27 +22,32 @@ const Cars = ({ results }) => {
 
   const filterResults = () => {
     let filteredResults = [...results];
-
+    
+    if (!Array.isArray(filteredResults)) {
+      filteredResults = [];
+    }
+    
     if (filters.segments.length > 0) {
       filteredResults = filteredResults.filter((car) =>
-        filters.segments.includes(car.Segment)
+        filters.segments.includes(car.segment)
       );
     }
 
     if (filters.fuelTypes.length > 0) {
       filteredResults = filteredResults.filter((car) =>
-        filters.fuelTypes.includes(car.FuelType)
+        filters.fuelTypes.includes(car.fuelType)
       );
     }
 
     if (filters.transitionTypes.length > 0) {
       filteredResults = filteredResults.filter((car) =>
-        filters.transitionTypes.includes(car.TransistionType)
+        filters.transitionTypes.includes(car.transistionType)
       );
     }
 
     return filteredResults;
   };
+  
 
     const styles = {
           

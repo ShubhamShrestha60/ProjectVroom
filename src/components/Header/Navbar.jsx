@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "./Navbar.css";
+import PropTypes from 'prop-types'; // Import PropTypes
 import { Link, NavLink } from "react-router-dom";
 import { useLocation } from 'react-router-dom'; 
 
-export const Navbar = () => {
+export const Navbar = ({ isLoggedIn }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
-  const hiddenPaths = ['/login', '/signup'];
+  const hiddenPaths = ['/login', '/signup', '/dashboard','/settings','/addCar','/adminlogin','/adminSignup','/adminsignup','/adminLogin','/booking'];
 
   // Check if the current location is in the array of hidden paths
   const isHidden = hiddenPaths.includes(location.pathname);
@@ -28,18 +29,25 @@ export const Navbar = () => {
         <span></span>
       </div>
       <ul className={menuOpen ? "open" : ""}>
+        
         <li>
-          <NavLink to="/manage-booking">Manage Booking</NavLink>
+          <NavLink to="/home#guide">How it works?</NavLink>
         </li>
-        <li>
-          <NavLink to="/how-it-works">How it works?</NavLink>
-        </li>
-        <li>
-          <NavLink to="/login">Log out </NavLink>
-        </li>
+        {isLoggedIn ? ( // Render profile if user is logged in
+            <li>
+              <NavLink to="/profile">Profile</NavLink>
+            </li>
+          ) : (
+            <li>
+              <p><Link to="/login">Login/Signup</Link></p>
+            </li>
+          )}
       </ul>
     </nav>
     </div>
   );
+};
+Navbar.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
 };
 export default Navbar;

@@ -1,19 +1,15 @@
-
 // import Login from './login.jsx'
 import React, { useState } from 'react';
 import logo from "./logo.png";
 import { Link } from "react-router-dom";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Test() {
   const navigate = useNavigate();
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [messageId, setMessageId] = useState(null);
-  const [typingTimeout, setTypingTimeout] = useState(null);
-  const [prevMessage, setPrevMessage] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -24,19 +20,7 @@ export default function Test() {
     confirmPassword: ''
   });
 
-  const checkPasswordStrength = (password) => {
-    const lowercaseRegex = /[a-z]/;
-    const uppercaseRegex = /[A-Z]/;
-    if (!lowercaseRegex.test(password)) {
-      return 0;
-    } else if (!uppercaseRegex.test(password)) {
-      return 1;
-    } else if (password.length < 8) {
-      return 2;
-    } else {
-      return 3;
-    }
-  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,57 +28,38 @@ export default function Test() {
       ...prevState,
       [name]: value
     }));
-    if(name==='password'){
-      clearTimeout(typingTimeout);
-      const timeout = setTimeout(() => {
-        displayPasswordStrength(value);
-      }, 500); // Adjust the delay as needed
-      setTypingTimeout(timeout);
-  };
   }
-    
+
 
   const displayPasswordStrength = (password) => {
-    const strength = checkPasswordStrength(password);
-    let message = '';
-    if (strength === 0) {
-      message = 'Password must contain at least one lowercase letter';
-    } else if (strength === 1) {
-      message = 'Password must contain at least one uppercase letter';
-    } else if (strength === 2) {
-      message = 'Password must contain at least eight characters';
+    // Your password strength logic here
+    // Example: You can check the length of the password and render a message based on its strength
+    if (password.length < 8) {
+      return 'Weak';
+    } else if (password.length < 12) {
+      return 'Moderate';
     } else {
-      setIsPasswordValid(true);
-      if (messageId) {
-        dismissToast();
-      }
-      return;
-    }
-    if (message !== prevMessage) {
-      if (messageId) {
-        toast.dismiss(messageId);
-      }
-      const newMessageId = toast.error(message);
-      setMessageId(newMessageId);
-      setPrevMessage(message);
+      return 'Strong';
     }
   };
 
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if (formData.password !== formData.confirmPassword) {
-          console.log("Error: Passwords do not match");
-          return;
-      }
-        axios.post('http://localhost:3001/register',formData)
-        .then(result =>{
-          console.log(result);
-          navigate('/login');
-        })
-        .catch(err=>console.log(err))
-        console.log(formData);
-      };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.password) {
+      setPasswordError('Password field should not be empty');
+      return;
+    // } else if (!/^(?=.[a-z])(?=.[A-Z])(?=.*[@])(?=.{8,})/.test(formData.password)) {
+    //   setPasswordError('Password must contain at least one lowercase letter, one uppercase letter, one "@" symbol, and be at least eight characters long');
+    //   return;
+    }
+    axios.post('http://localhost:3002/register', formData)
+      .then(result => {
+        console.log(result);
+        navigate('/login');
+      })
+      .catch(err => console.log(err));
+    console.log(formData);
+  };
 
 
   const styles = {
@@ -155,24 +120,23 @@ export default function Test() {
   
   return (
     <div style={styles.container}>
-      <ToastContainer />
       <form className="Login" style={styles.Login} onSubmit={handleSubmit}>
         <img src={logo} alt="" style={styles.img} />
 
         <div style={styles.inputGroup}>
-          <input type="text" style={{ ...styles.input, flex: "1", marginRight: "5px" }} name="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" />
-          <input type="text" style={{ ...styles.input, flex: "1", marginLeft: "5px" }} name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last Name" />
+          <input type="text" style={{ ...styles.input, flex: "1", marginRight: "5px" }} name="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" required />
+          <input type="text" style={{ ...styles.input, flex: "1", marginLeft: "5px" }} name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last Name" required />
         </div>
 
         <label htmlFor="phone" style={styles.label}>
           Phone Number
         </label>
-        <input id="phone" type="tel" style={styles.input} name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+        <input id="phone" type="tel" style={styles.input} name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required />
 
         <label htmlFor="email" style={styles.label}>
           Email
         </label>
-        <input id="email" type="email" style={styles.input} name="email" value={formData.email} onChange={handleChange} />
+        <input id="email" type="email" style={styles.input} name="email" value={formData.email} onChange={handleChange} required />
 
         <label htmlFor="password" style={styles.label}>
           Password
@@ -192,11 +156,17 @@ export default function Test() {
         <label htmlFor="confirm-password" style={styles.label}>
           Confirm Password
         </label>
-        <input id="confirm-password" type="password" style={styles.input} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
+        <input id="confirm-password" type="password" style={styles.input} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
+
+        
+       
+        <p id="passwordStrength">{displayPasswordStrength(formData.password)}</p>
+
+        {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
 
         <button type="submit" style={styles.button}>Register</button>
         <p style={styles.signUp}>
-         Already have an account? <span style={{ color: "#5CB3FF" }}><Link to="/login">Login</Link></span>
+          Already have an account? <span style={{ color: "#5CB3FF" }}><Link to="/login">Login</Link></span>
         </p>
 
       </form>

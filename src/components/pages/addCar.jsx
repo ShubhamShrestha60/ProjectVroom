@@ -28,7 +28,7 @@ const AddCar = () => {
     formData.append('image', image); // Append image file
     
     try {
-      const response = await fetch('http://localhost:3001/addCar', { 
+      const response = await fetch('http://localhost:3002/addCar', { 
           method: 'POST',
           body: formData,
       });
@@ -41,23 +41,6 @@ const AddCar = () => {
       }
   } catch (error) {
       console.error('Failed to add car:', error.message);
-  }
-};
-const handleDelete = async () => {
-  const carID = document.getElementById('carID').value; // Assuming carID is unique
-  try {
-    const response = await fetch(`http://localhost:3001/deleteCar/${carID}`, {
-      method: 'DELETE',
-    });
-    
-    if (response.ok) {
-      console.log('Car deleted successfully');
-      // You may want to reset the form or update UI after deletion
-    } else {
-      console.error('Failed to delete car:', response.statusText);
-    }
-  } catch (error) {
-    console.error('Failed to delete car:', error.message);
   }
 };
 
@@ -115,18 +98,7 @@ const handleDelete = async () => {
           Add Car
         </button>
       </form>
-      <div >
-        <h3 className="add-car__title">Delete Car</h3>
-        <div className="add-car__form-group">
-          <label htmlFor="carIDToDelete">Enter Car ID to Delete:</label>
-          <input type="number" id="carIDToDelete" name="carIDToDelete" />
-        </div>
-        <button onClick={handleDelete} className="delete-car__submit-btn">
-          Delete Car
-        </button>
-      </div>
     </div>
-    
   );
 };
  

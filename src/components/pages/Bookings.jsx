@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/bookings.css";
-import carData from "../assets/dummy-data/booking-cars.jsx";
-import CarItem from "../components/UI/CarItem";
+import carData from "../../assets/dummy-data/booking-cars";
+import CarItem from "../UI/CarItem";
 
 const Bookings = () => {
   return (

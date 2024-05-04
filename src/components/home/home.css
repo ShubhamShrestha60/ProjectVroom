@@ -3,10 +3,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-.sabse_main{
-    /* background-color: rgba(128, 0, 0, 0.9); */
-    background-color: black;
-}
+
 .main {
     
     
@@ -20,10 +17,6 @@
     background-color: rgba(128, 0, 0, 0.9);
     
 }
-
-
-
-
 
 .search {
     
@@ -44,7 +37,7 @@
 
 .input {
     height: 63px;
-    flex: 1.2;
+    flex: 1.5;
     border-radius: 5px;
     border: 1px solid #ccc;
     text-align: center;
@@ -58,20 +51,8 @@
     border: 1px solid maroon;
 }
 
-.pickup{
-    flex: 0.4;
-    display: inline-flex;
-    gap: 0.5vh;
-    margin: auto;
-}
-.dropoff{
-    flex: 0.4;
-    display: inline-flex;
-    gap:0.5vh ;
-    margin: auto;
-}
 .search_button{
-    flex: 0.1;
+    flex: 0.4;
     margin: auto;
     background-color: rgba(167, 13, 13, 0.9);
     color: white;
@@ -94,33 +75,9 @@ button {
     margin: auto;
 }
 
-.dropdown {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: -2vw;
-    z-index: 1000;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 5px;
-    width: 10vh;
-    max-height: 150px;
-    overflow-y: auto;
-    cursor: pointer;
-    color: black;
-}
-
-.calendarContainer {
-    position: absolute;
-    top: calc(100% + 10px);
-    left: -200px;
-    z-index: 1000;
-    color: black;
-   
-}
 .pickup_error-message{
     position: absolute;
-    top: calc(80%);
+    top: calc(100%);
     /* left: -200px; */
     z-index: 1000;
     color: red;
@@ -128,22 +85,13 @@ button {
 }
 .dropoff_error-message{
     position: absolute;
-    top: calc(80%);
+    top: calc(100%);
     left: 450px;
     z-index: 1000;
     color: red;
     font-family: 'Poppins', sans-serif;
 }
-.timegap_error-message{
-    position: absolute;
-    top: calc(100%);
-   font-size: 14px;
-    z-index: 1000;
-    color: red;
-    font-family: 'Poppins', sans-serif;
-    width: 18vw;
-    right: 5px;
-}
+
 
 
 .guide {
@@ -240,10 +188,11 @@ button {
         width: 90vw;
         margin: auto;
         z-index: 1;
+        
     }
 
     .search{
-        height: 300px;
+        height: 200px;
         display: flex;
         flex-direction: column;
         left: -2vw;
@@ -258,74 +207,24 @@ button {
 
     .input{
         flex:20%;
-        width: 90vw;
-        
-        margin-left: 0px;
-        
+        width: 88vw;
         text-align: center;
         margin: auto;
+        padding-right: 10px;
     }
-    .pickup{
-        flex: 15%;
-        width: fit-content;
-        margin: auto;
-          
-    }
-    .pickup button{
-        width: 45vw;
-        margin: auto;
-        
-    }
-    .dropoff{
-        flex: 15%;
-        width: fit-content;
-        margin: auto;
-    }
-    .dropoff button{
-        width: 45vw;
-        margin: auto;
-        
-    }
+    
     .search_button{
         flex: 15%;
-        width: 90vw;
+        width: 88vw;
         margin: auto;
     }
-
-    .calendarContainer {
-        position: absolute;
-        top: calc(100% + 10px);
-        left: 45%; 
-         transform: translateX(-50%); 
-         z-index: 1000;
-         width: 75vw;
-        
-    }
-    .dropdown {
-        position: absolute;
-        top: calc(100% + 10px);
-        right: -26%;
-        transform: translateX(-50%);
-        z-index: 1000;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        padding: 5px;
-        width: 45vw;
-        
-        overflow-y: auto;
-        cursor: pointer;
-    } 
 
     .pickup_suggestions {
         
         top: calc(20% + 5px); 
         left: 10px;
-        width: 89vw;
-        
+        width: 89vw;    
     }
-    
-    
 
     .dropoff_suggestions {
         

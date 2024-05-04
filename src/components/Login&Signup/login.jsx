@@ -1,15 +1,29 @@
 import logo from "./logo.png";
 import { Link } from "react-router-dom";
-import React, { useState} from 'react';
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types'; // Import PropTypes
 import { useNavigate } from "react-router-dom";
 
-export default function Test() {
+
+
+export default function Test({ setIsLoggedIn }) {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const navigate = useNavigate()
+  const [showPopup, setShowPopup] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn]= useState(false);
+  const navigate = useNavigate();
+ 
+  useEffect(() => {
+    const loggedInStatus = localStorage.getItem('isLoggedIn');
+    if (loggedInStatus === 'true') {
+      setIsLoggedIn(true);
+    }
+  }, []); // Empty dependency array to run the effect only once
+ 
+   
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -19,14 +33,27 @@ export default function Test() {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:3001/login', formData)
-    .then(result =>{console.log(result)
-      if(result.data === "Success"){
-        navigate('/home')
-      }
-    })
-    .catch(err=> console.log(err)) 
+    axios.post('http://localhost:3002/login', formData)
+      .then(result => {
+        console.log(result);
+        if (result.data === "Success") {
+          localStorage.setItem("isLoggedIn", "true"); // Set isLoggedIn to true in localStorage
+          localStorage.setItem("userEmail",formData.email );
+          setIsLoggedIn(true);
+          setShowPopup(true); // Show popup upon successful login
+          setTimeout(() => {
+            setShowPopup(false); // Hide popup after some time
+            navigate('/home'); // Navigate to home page upon successful login
+          }, 2000); // Hide popup after 3 seconds
+        }
+      })
+      .catch(err => console.log(err));
   };
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn'); // Remove isLoggedIn from local storage on logout
+    setIsLoggedIn(false);
+  }
+
   const styles = {
     container: {
       display: "flex",
@@ -90,6 +117,17 @@ export default function Test() {
       fontSize: "13px",
       marginTop: "20px",
     },
+    popup: {
+      position: "fixed",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      backgroundColor: "white",
+      padding: "20px",
+      borderRadius: "10px",
+      boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
+      zIndex: "999",
+    },
   };
 
   return (
@@ -100,14 +138,14 @@ export default function Test() {
         <label htmlFor="my-email" style={styles.label}>
           Email
         </label>
-        <input id="Email" type="Email" style={styles.email} name="email" value={formData.email} onChange={handleChange} />
+        <input id="Email" type="email" style={styles.email} name="email" value={formData.email} onChange={handleChange} required/>
 
         <label htmlFor="my-password" style={styles.label}>
           Password
         </label>
-        <input id="my-password" type="password" style={styles.password} name="password" value={formData.password} onChange={handleChange} />
+        <input id="my-password" type="password" style={styles.password} name="password" value={formData.password} onChange={handleChange} required />
 
-        <button style={styles.button}>Login</button>
+        <button type="submit" style={styles.button}>Login</button>
 
         <p style={styles.forgotPassword}>Forget Password?</p>
 
@@ -115,6 +153,15 @@ export default function Test() {
           Don't have an account yet? <span style={{ color: "#5CB3FF" }}><Link to="/signup">Sign up</Link></span>
         </p>
       </form>
+     
+      {showPopup && (
+        <div style={styles.popup}>
+          <p>Login Successful!</p>
+        </div>
+      )}
     </div>
   );
 }
+Test.propTypes = {
+  setIsLoggedIn: PropTypes.func.isRequired,
+};

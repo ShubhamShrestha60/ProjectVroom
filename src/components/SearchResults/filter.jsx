@@ -14,12 +14,14 @@ const Filter = ({ filters, onFilterChange }) => {
         filter_Main:{
             
             display:"grid",
-            gridTemplateRows:"1fr 1fr 1fr",
+            gridTemplateRows:"150px 150px 150px",
             borderRight:"3px solid black",
-            borderBottom:"3px solid black",
+            
             boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", 
             color:"black",
-            backgroundColor:"white"
+            backgroundColor:"white",
+            // height:"100%",
+            paddingTop:"30px"
 
         },
 
@@ -28,15 +30,17 @@ const Filter = ({ filters, onFilterChange }) => {
            lineHeight: "normal",
             width: "20px",
             height: "20px",
+        
+    
         },
         label:{
            
             fontSize:"19px",
             color:"white"
         },
-        segmentsh3:{
-            color:"red"
-        }
+
+
+        
     
     }
     return (
@@ -78,16 +82,16 @@ const Filter = ({ filters, onFilterChange }) => {
                   type="checkbox"
                   id="petrol"
                   style={{marginLeft:"3vw"}} 
-                  checked={filters.fuelTypes.includes("petrol")}
-                  onChange={() => handleCheckboxChange("fuelTypes", "petrol")}
+                  checked={filters.fuelTypes.includes("Petrol")}
+                  onChange={() => handleCheckboxChange("fuelTypes", "Petrol")}
             /> <label htmlFor="">Petrol</label> <br />
             <input
                   type="checkbox"
                   id="diesel"
                   style={{marginLeft:"3vw"}} 
-                  checked={filters.fuelTypes.includes("diseal")}
-                  onChange={() => handleCheckboxChange("fuelTypes", "diseal")}
-            /> <label htmlFor="">Diseal</label>
+                  checked={filters.fuelTypes.includes("Diesel")}
+                  onChange={() => handleCheckboxChange("fuelTypes", "Diesel")}
+            /> <label htmlFor="">Diesel</label>
             
             </section>
 

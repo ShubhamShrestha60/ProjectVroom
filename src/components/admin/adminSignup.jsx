@@ -32,7 +32,7 @@ export default function AdminSignup() {
       return;
     }
 
-    axios.post('http://localhost:3001/signup', formData)
+    axios.post('http://localhost:3002/signup', formData)
       .then(response => {
         console.log(response.data);
         navigate('/adminLogin');
