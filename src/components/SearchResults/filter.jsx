@@ -100,17 +100,17 @@ const Filter = ({ filters, onFilterChange }) => {
             <h3 style={{color:"black",paddingLeft:"3vw",borderBottom:"2px solid black",paddingBottom:"10px"}}>Transistion</h3>
               <input
                type="checkbox"
-               id="automatic"
+               id="manual"
                style={{marginLeft:"3vw"}} 
-               checked={filters.transitionTypes.includes("manual")}
-               onChange={() => handleCheckboxChange("transitionTypes", "manual")}
+               checked={filters.transitionTypes.includes("Manual")}
+               onChange={() => handleCheckboxChange("transitionTypes", "Manual")}
               /> <label htmlFor="">Manual</label><br />
               <input
                type="checkbox"
                id="automatic"
                style={{marginLeft:"3vw"}} 
-               checked={filters.transitionTypes.includes("auto")}
-               onChange={() => handleCheckboxChange("transitionTypes", "auto")}
+               checked={filters.transitionTypes.includes("Automatic")}
+               onChange={() => handleCheckboxChange("transitionTypes", "Automatic")}
               /><label htmlFor="">Automatic</label> <br />
             </section>
 

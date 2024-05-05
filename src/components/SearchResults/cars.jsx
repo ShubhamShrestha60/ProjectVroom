@@ -41,7 +41,7 @@ const Cars = ({ results }) => {
 
     if (filters.transitionTypes.length > 0) {
       filteredResults = filteredResults.filter((car) =>
-        filters.transitionTypes.includes(car.transistionType)
+        filters.transitionTypes.includes(car.transitionType)
       );
     }
 

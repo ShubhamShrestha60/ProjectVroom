@@ -4,11 +4,15 @@ import logo from "./logo.png";
 import { Link } from "react-router-dom";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-
+import { Component } from "react";
+// gi is sort name of game icon.
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 export default function Test() {
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State to control password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State to control password visibility
   
 
   const [formData, setFormData] = useState({
@@ -29,17 +33,25 @@ export default function Test() {
       [name]: value
     }));
   }
+   
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  }
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  }
 
 
   const displayPasswordStrength = (password) => {
     // Your password strength logic here
     // Example: You can check the length of the password and render a message based on its strength
     if (password.length < 8) {
-      return 'Weak';
+      return <p style={{color:"red"}}>Weak</p>;
     } else if (password.length < 12) {
-      return 'Moderate';
+      return <p style={{color:"black"}}>Moderate</p>;
     } else {
-      return 'Strong';
+      return <p style={{color:"green"}}>Strong</p>;
     }
   };
 
@@ -115,6 +127,22 @@ export default function Test() {
       fontSize: "13px",
       marginTop: "20px",
     },
+    password_eye:{
+      zIndex: "1001",
+      position: "absolute",
+      top: "50%",
+      right: "10px",
+      transform: "translateY(-90%)",
+      cursor: "pointer",
+    },
+    confirm_password_eye:{
+      zIndex: "1001",
+      position: "absolute",
+      top: "50%",
+      right: "10px",
+      transform: "translateY(-90%)",
+      cursor: "pointer",
+    }
   };
   
   
@@ -141,23 +169,65 @@ export default function Test() {
         <label htmlFor="password" style={styles.label}>
           Password
         </label>
-        <input 
-          id="password" 
-          type="password" 
-          style={styles.input} 
-          name="password" 
-          value={formData.password} 
-          onChange={(e) => {
-            handleChange(e);
-            displayPasswordStrength(e.target.value);
-          }} 
-        />
+        <div style={{ position: "relative" }}>
+          <input 
+            id="password" 
+            type={showPassword ? "text" : "password"} 
+            style={styles.input} 
+            name="password" 
+            value={formData.password} 
+            onChange={(e) => {
+              handleChange(e);
+              displayPasswordStrength(e.target.value);
+            }} 
+            required 
+          />
+          {showPassword ? (
+            <FaRegEye 
+            className='password_eye' 
+            style={styles.password_eye} 
+            onClick={togglePasswordVisibility} 
+          />
+            
+          ) : (
+            <FaRegEyeSlash 
+            className='password_eye' 
+            style={styles.password_eye} 
+            onClick={togglePasswordVisibility} 
+            />
+          )}
+        </div>
+    
         
         <label htmlFor="confirm-password" style={styles.label}>
           Confirm Password
         </label>
-        <input id="confirm-password" type="password" style={styles.input} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
 
+        <div style={{position:"relative"}}>
+        <input id="confirm-password"
+         type={showConfirmPassword ? "text" : "password"} 
+         style={styles.input} 
+         name="confirmPassword" 
+         value={formData.confirmPassword} 
+         onChange={handleChange} required />
+         
+         {showConfirmPassword ? (
+            <FaRegEye 
+            className='confirm_password_eye' 
+            style={styles.confirm_password_eye} 
+            onClick={toggleConfirmPasswordVisibility} 
+          />
+            
+          ) : (
+            <FaRegEyeSlash 
+            className='confirm_password_eye' 
+            style={styles.confirm_password_eye} 
+            onClick={toggleConfirmPasswordVisibility} 
+            />
+          )}
+         
+
+       </div>
         
        
         <p id="passwordStrength">{displayPasswordStrength(formData.password)}</p>

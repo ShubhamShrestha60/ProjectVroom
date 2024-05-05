@@ -9,6 +9,9 @@ import PropTypes from 'prop-types'; // Import PropTypes
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
+
+
+
 export const Home = ({setResults}) => {
     
 
@@ -175,6 +178,7 @@ export const Home = ({setResults}) => {
                            with vroom cars.
                         </p>
                     </div>
+                    
                 </div>
             </div>
             </div>

@@ -11,6 +11,8 @@ const admModel = require('./models/admin');
 const bookingModel = require('./models/booking');
 const app = express();
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 app.use('/uploads', express.static('uploads'));
 app.use(express.json());
@@ -18,31 +20,107 @@ app.use(cors());
 
 mongoose.connect("mongodb://localhost:27017/User");
 
-app.post("/login", (req, res) => {
+// Login endpoint only allowing verified users to log in
+app.post("/login", async (req, res) => {
     const { email, password } = req.body;
-    userModel.findOne({ email: email })
-        .then(user => {
-            if (user) {
-                if (user.password === password) {
-                    res.json("Success");
+    try {
+        const user = await userModel.findOne({ email: email });
 
-                } else {
-                    res.json("the password is incorrect");
-                }
-            } else {
-                req.json("No record existed");
-            }
-        })
-        .catch(error => {
-            res.status(500).json("Internal server error");
-        });
+        if (!user) {
+            return res.json("No record existed");
+        }
+
+        if (!user.isVerified) {
+            return res.json("Please verify your email to login.");
+        }
+
+        if (user.password === password) {
+            res.json("Success");
+        } else {
+            res.json("Incorrect password");
+        }
+    } catch (error) {
+        res.status(500).json("Internal server error");
+    }
 });
 
-app.post('/register', (req, res) => {
-    userModel.create(req.body)
-        .then(Client => res.json(Client))
-        .catch(err => res.json(err));
+
+
+// Nodemailer transporter for sending emails
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    port: 587,
+    secure: true,
+    logger:true,
+    dubug:true,
+    secureConnection:false,
+    auth: {
+        user: "pratikpanthi100@gmail.com", // <-- Your email address
+        pass: "kxio tjem dbet eeba" // <-- Your email password
+    },
+    tls:{
+        rejectUnauthorized: true
+    }
 });
+
+// Function to send verification email
+const sendVerifyMail = async (name, email, verificationToken) => {
+    try {
+        const mailOptions = {
+            from: "pratikpanthi100@gmail.com", // <-- Your email address
+            to: email,
+            subject: "Verification mail",
+            html: `<p>Hi ${name}, please click <a href="http://localhost:3002/verify?id=${verificationToken}">here</a> to verify your email.</p>`
+        };
+
+        await transporter.sendMail(mailOptions);
+        console.log("Email has been sent.");
+    } catch (error) {
+        console.error("Error sending email:", error);
+    }
+};
+
+// User registration endpoint with email verification
+app.post('/register', async (req, res) => {
+    try {
+        const user = await userModel.create(req.body);
+        const verificationToken = crypto.randomBytes(20).toString('hex'); // Generate a random token
+        user.verificationToken = verificationToken;
+        await user.save();
+
+        // Send verification email
+        await sendVerifyMail(user.firstName, user.email, verificationToken);
+
+        res.json({ message: "Your registration is successful. Please verify your email" });
+    } catch (err) {
+        console.error("Error registering user:", err);
+        res.status(500).json({ message: "Your registration has failed" });
+    }
+});
+
+// User email verification endpoint
+app.get('/verify', async (req, res) => {
+    try {
+        const { id } = req.query;
+        const user = await userModel.findOne({ verificationToken: id });
+
+        if (!user) {
+            return res.status(404).json({ message: "Invalid verification token" });
+        }
+
+        user.isVerified = true;
+        user.verificationToken = null; // Remove verification token after verification
+        await user.save();
+
+        res.json({ message: "Email verified successfully. You can now login." });
+    } catch (err) {
+        console.error("Error verifying email:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+
+
 
 app.post('/addCar', upload.single('image'), async (req, res) => {
     try {
@@ -155,6 +233,23 @@ app.post('/carDetails', async (req, res) => {
     }
 });
 
+
+const sendBookingSuccessEmail = async (email, bookingID) => {
+    try {
+        const mailOptions = {
+            from: "pratikpanthi100@gmail.com",
+            to: email,
+            subject: "Booking Successful",
+            html: `<p>Your booking was successful. Your booking ID is ${bookingID}.</p>`
+        };
+
+        await transporter.sendMail(mailOptions);
+        console.log("Booking success email has been sent.");
+    } catch (error) {
+        console.error("Error sending booking success email:", error);
+    }
+};
+
 app.post('/booking', upload.single('image'), async (req, res) => {
     try {
         const { email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate } = req.body;
@@ -162,13 +257,17 @@ app.post('/booking', upload.single('image'), async (req, res) => {
 
         const newBooking = new bookingModel({ email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate, LicensePhoto });
         await newBooking.save();
-
+        
+        await sendBookingSuccessEmail(email, newBooking.bookingID);
         res.status(201).json({ message: 'Booking Successfull', booking: newBooking });
 
     } catch (error) {
+        console.error('Error creating booking:', error);
         res.status(500).json({ error: 'internal server error' });
     }
 });
+
+
 
 app.post('/bookingDetails', async (req, res) => {
     try {

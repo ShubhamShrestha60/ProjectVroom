@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types'; // Import PropTypes
 import { useNavigate } from "react-router-dom";
-
+import { Component } from "react";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";  
 
 
 export default function Test({ setIsLoggedIn }) {
@@ -13,9 +14,15 @@ export default function Test({ setIsLoggedIn }) {
     password: ''
   });
   const [showPopup, setShowPopup] = useState(false);
-  // const [isLoggedIn, setIsLoggedIn]= useState(false);
+
+  const [showPassword, setShowPassword] = useState(false); // State to control password visibility
+const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  }
+
+  
   const navigate = useNavigate();
- 
+  
   useEffect(() => {
     const loggedInStatus = localStorage.getItem('isLoggedIn');
     if (loggedInStatus === 'true') {
@@ -49,10 +56,6 @@ export default function Test({ setIsLoggedIn }) {
       })
       .catch(err => console.log(err));
   };
-  const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn'); // Remove isLoggedIn from local storage on logout
-    setIsLoggedIn(false);
-  }
 
   const styles = {
     container: {
@@ -128,6 +131,14 @@ export default function Test({ setIsLoggedIn }) {
       boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
       zIndex: "999",
     },
+    password_eye:{
+      zIndex: "1001",
+      position: "absolute",
+      top: "50%",
+      right: "10px",
+      transform: "translateY(-90%)",
+      cursor: "pointer",
+    }
   };
 
   return (
@@ -143,11 +154,34 @@ export default function Test({ setIsLoggedIn }) {
         <label htmlFor="my-password" style={styles.label}>
           Password
         </label>
-        <input id="my-password" type="password" style={styles.password} name="password" value={formData.password} onChange={handleChange} required />
+        <div style={{position:"relative"}}>
+        <input id="my-password" 
+                 type={showPassword ? "text" : "password"}  
+               style={styles.password} 
+               name="password" 
+               value={formData.password} 
+               onChange={handleChange} required />
+
+          {showPassword ? (
+            <FaRegEye 
+            className='password_eye' 
+            style={styles.password_eye} 
+            onClick={togglePasswordVisibility} 
+          />
+            
+          ) : (
+            <FaRegEyeSlash 
+            className='password_eye' 
+            style={styles.password_eye} 
+            onClick={togglePasswordVisibility} 
+            />
+          )}
+         </div>
+        
 
         <button type="submit" style={styles.button}>Login</button>
 
-        <p style={styles.forgotPassword}>Forget Password?</p>
+        
 
         <p style={styles.signUp}>
           Don't have an account yet? <span style={{ color: "#5CB3FF" }}><Link to="/signup">Sign up</Link></span>

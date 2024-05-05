@@ -7,6 +7,11 @@ const userSchema = new mongoose.Schema({
     phoneNumber: String,
     email: String,
     password: String,
+    verificationToken: String,
+    isVerified: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const userModel = mongoose.model('Client', userSchema);

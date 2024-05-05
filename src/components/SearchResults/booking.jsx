@@ -256,27 +256,6 @@ export default function Booking(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        const pickupDateTime = new Date(`${pickupDate.toDateString()} ${pickupTime}`);
-        const dropoffDateTime = new Date(`${dropoffDate.toDateString()} ${dropoffTime}`);
-
-        if (pickupDateTime >= dropoffDateTime) {
-            setTimeGapError("Dropoff time must be later than pickup time");
-            return;
-        } else {
-            setTimeGapError(""); 
-        }
-
-        const timeDifference = Math.abs(dropoffDateTime - pickupDateTime) / (1000 * 60 * 60); 
-
-        if (timeDifference < 1) {
-            setTimeGapError("There must be at least one hour between pickup and dropoff");
-            return;
-        } else {
-            setTimeGapError(""); 
-        }
-
-
         // Create FormData object to append form data
         const formData = new FormData();
         const userEmail = localStorage.getItem('userEmail');
@@ -305,23 +284,67 @@ export default function Booking(){
             });
     
           if (response.ok) {
-              const data = await response.json();
-              console.log('Booking successfully:', data.booking);
+             const data = await response.json();
+             setBookingConfirmed(true);
+          console.log('Booking successfully:', data.booking);
+        //   setShowConfirmation(true);
           } else {
               console.error('Booking Failed:', response.statusText);
           }
       } catch (error) {
           console.error('Booking Failed:', error.message);
       }
+
+     
+    //   setShowConfirmation(true);
+      
     };
 
+
+    const handleError =()=>{
+
+        const pickupDateTime = new Date(`${pickupDate.toDateString()} ${pickupTime}`);
+        const dropoffDateTime = new Date(`${dropoffDate.toDateString()} ${dropoffTime}`);
+     
+        if (pickupDateTime >= dropoffDateTime) {
+            setTimeGapError("Dropoff time must be later than pickup time");
+            return;
+        } else {
+            setTimeGapError(""); 
+        }
+
+        const timeDifference = Math.abs(dropoffDateTime - pickupDateTime) / (1000 * 60 * 60); 
+
+        if (timeDifference < 1) {
+            setTimeGapError("There must be at least one hour between pickup and dropoff");
+        return;
+
+        } else {
+            setTimeGapError(""); 
+        }
+
+    // setShowConfirmation(false); 
+    if (!value || !expiryDate || !image) {
+        setShowEmptyFieldPopup(true); // Show popup if any field is empty
+        setShowConfirmation(false);
+        return;
+    }
+    else{
+        setShowConfirmation(true);
+    }
+
+    }
+
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [showEmptyFieldPopup, setShowEmptyFieldPopup] = useState(false);
 
     const handleConfirmBooking = async (e) => {
         e.preventDefault();
-        setShowConfirmation(false); // Close the confirmation popup after submitting
-        await handleSubmit(e); // Wait for booking submission
-        setBookingConfirmed(true); // Show booking confirmed message
+
+        setShowConfirmation(false);
+        await handleSubmit(e); 
+        
+        return;    
     };
     const handleOKButtonClick = () => {
         setBookingConfirmed(false);
@@ -416,35 +439,41 @@ export default function Booking(){
                               id="licenseNumber" 
                               name="licenseNumber"
                               style={styles.input}
+                              
                          />
                          <input type="date" placeholder="dd/mm/yyyy"  style={styles.input} id="expiryDate" name="expiryDate" value={expiryDate} onChange={handleExpiryDateChange}/>
                          
                        </div>
 
                         <input type="file" id="image" name="image" accept="image/*" onChange={handleImageChange} style={styles.upload}  />
-                        <button onClick={() => setShowConfirmation(true)} className='submit' style={styles.submit}>Rent Now</button>
+                        <button onClick={handleError} className='submit' style={styles.submit}>Rent Now</button>
+              
 
-            {/* Confirmation popup */}
-            {showConfirmation && (
-                <div className="confirmation_popup" style={styles.confirmation_popup}>
-                    <p>Do you want to confirm the booking?</p>
-                    <div className='option' style={styles.option}>
-                    <button onClick={(e) => handleConfirmBooking(e)} style={{width:"50%"}}>Yes</button>
-                    <button onClick={() => setShowConfirmation(false)} style={{width:"50%"}}>No</button>
+          
+          {showEmptyFieldPopup && (
+    <div className="confirmation_popup" style={styles.confirmation_popup}>
+        <p>Please fill all the fields.</p>
+        <button onClick={() => setShowEmptyFieldPopup(false)} style={{width:"70px", marginTop:"15px"}}>OK</button>
+    </div>
+           )}
+              
+            {showConfirmation &&(
+    <div className="confirmation_popup" style={styles.confirmation_popup}>
+        <p>Do you want to confirm the booking?</p>
+        <div className='option' style={styles.option}>
+            <button onClick={(e) => handleConfirmBooking(e)} style={{width:"50%"}}>Yes</button>
+            <button onClick={() => setShowConfirmation(false)} style={{width:"50%"}}>No</button>
+        </div>
+    </div>
+         )}
+               
+               {!showEmptyFieldPopup && !timeGapError && bookingConfirmed && (
+    <div className="confirmation_popup" style={styles.confirmation_popup}>
+        <h4>Your booking has been confirmed.</h4>
+        <button onClick={handleOKButtonClick} style={{width:"70px", marginTop:"15px"}}>OK</button>
+    </div>
+)}
                     </div>
-                </div>
-            )}
-
-               {bookingConfirmed && (
-                <div className="confirmation_popup" style={styles.confirmation_popup}>
-                    <h4>Your booking has been confirmed.</h4>
-                    <button onClick={handleOKButtonClick} style={{width:"70px", marginTop:"15px"}}>OK</button>
-                </div>
-            )}
-                    </div>
-
-
-                    {/* </div> */}
             </div>
         </div>
     );
