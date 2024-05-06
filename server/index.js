@@ -255,15 +255,25 @@ app.post('/booking', upload.single('image'), async (req, res) => {
         const { email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate } = req.body;
         const LicensePhoto = req.file ? req.file.path : null;
 
-        const newBooking = new bookingModel({ email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate, LicensePhoto });
+        // Create a new booking record
+        const newBooking = new Booking({ email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate, LicensePhoto });
         await newBooking.save();
-        
-        await sendBookingSuccessEmail(email, newBooking.bookingID);
-        res.status(201).json({ message: 'Booking Successfull', booking: newBooking });
 
+        // Update car availability to false
+        const updatedCar = await Car.findOneAndUpdate(
+            { carID: carID, availability: true }, // Find the car by carID and ensure it's currently available
+            { availability: false }, // Update availability to false
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedCar) {
+            return res.status(404).json({ error: 'Car not available for booking' });
+        }
+
+        res.status(201).json({ message: 'Booking successful', booking: newBooking });
     } catch (error) {
-        console.error('Error creating booking:', error);
-        res.status(500).json({ error: 'internal server error' });
+        console.error('Error booking car:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 

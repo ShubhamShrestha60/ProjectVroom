@@ -5,7 +5,7 @@ const navLinks = [
     display: "Dashboard",
   },
   {
-    path: "/bookings",
+    path: "/adminbookings",
     icon: "ri-taxi-line",
     display: "Booking",
   },
@@ -13,12 +13,16 @@ const navLinks = [
     path:"/addCar",
     display:"AddCar"
   },
-  
-  {
-    path: "/settings",
-    icon: "ri-settings-2-line",
-    display: "Settings",
-  },
+{
+  path:'/available',
+  display:"Available"
+
+},
+{
+  path:'/carmanagement',
+  display:"View Cars"
+},
+
 ];
 
 export default navLinks;
