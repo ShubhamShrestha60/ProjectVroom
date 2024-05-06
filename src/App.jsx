@@ -7,7 +7,7 @@ import { Navbar } from "./components/Header/Navbar";
 import { Footer } from "./components/footer/footer";
 import Sidebar from "./components/Sidebar/Sidebar";
 import TopNav from "./components/TopNav/TopNav";
-import Booking from "./components/pages/Bookings";
+import Booking from "./components/pages/adminBookings";
 import Dashboard from "./components/pages/Dashboard";
 import AddCar from "./components/pages/addCar";
 import AdminLogin from "./components/admin/adminLogin";

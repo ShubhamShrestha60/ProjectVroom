@@ -13,12 +13,11 @@ const AdminBookings = () => {
     dropoffDate: '',
   });
 
-  // Function to fetch bookings from the backend
   const fetchBookings = async () => {
     try {
       const response = await axios.get(`http://localhost:3001/bookings`);
       if (Array.isArray(response.data)) {
-        setBookings(response.data); // Update state with fetched bookings
+        setBookings(response.data);
       } else {
         console.error('Invalid bookings data format:', response.data);
       }
@@ -27,50 +26,54 @@ const AdminBookings = () => {
     }
   };
 
-  // Fetch bookings when component mounts
   useEffect(() => {
     fetchBookings();
-  }, []); // Dependency array to execute useEffect only on component mount
+  }, []);
 
-  // Function to handle opening the update modal
   const handleOpenUpdateModal = (booking) => {
     setUpdateData({
       bookingID: booking._id,
       pickupLocation: booking.pickupLocation,
       dropoffLocation: booking.dropoffLocation,
-      pickupDate: new Date(booking.pickupDate).toISOString().slice(0, 16), // Format for datetime-local input
-      dropoffDate: new Date(booking.dropoffDate).toISOString().slice(0, 16), // Format for datetime-local input
+      pickupDate: new Date(booking.pickupDate).toISOString().slice(0, 16),
+      dropoffDate: new Date(booking.dropoffDate).toISOString().slice(0, 16),
     });
     setShowUpdateModal(true);
   };
 
-  // Function to update booking details
   const handleUpdateBooking = async () => {
     try {
       const { bookingID, ...updatedFields } = updateData;
       await axios.put(`http://localhost:3001/bookings/${bookingID}`, updatedFields);
-      fetchBookings(); // Refresh bookings data after update
-      setShowUpdateModal(false); // Hide the modal
+      fetchBookings();
+      setShowUpdateModal(false);
     } catch (error) {
       console.error('Error updating booking:', error);
     }
   };
 
-  // Function to handle marking a booking as completed
   const handleMarkAsCompleted = async (bookingID) => {
     try {
       await axios.put(`http://localhost:3001/bookings/${bookingID}/complete`);
-      fetchBookings(); // Refresh bookings data after update
+      fetchBookings();
     } catch (error) {
       console.error('Error marking booking as completed:', error);
     }
   };
 
-  // Function to handle deleting a booking
+  const handleBookAccept = async (bookingID) => {
+    try {
+      await axios.put(`http://localhost:3001/bookings/${bookingID}/booked`);
+      fetchBookings();
+    } catch (error) {
+      console.error('Error updating booking status to booked:', error);
+    }
+  };
+
   const handleDeleteBooking = async (bookingID) => {
     try {
       await axios.delete(`http://localhost:3001/bookings/${bookingID}`);
-      fetchBookings(); // Refresh bookings data after deletion
+      fetchBookings();
     } catch (error) {
       console.error('Error deleting booking:', error);
     }
@@ -89,6 +92,7 @@ const AdminBookings = () => {
             <th>Dropoff Date & Time</th>
             <th>Status</th>
             <th>Actions</th>
+            <th>Book</th>
           </tr>
         </thead>
         <tbody>
@@ -102,25 +106,23 @@ const AdminBookings = () => {
               <td>{booking.status}</td>
               <td className="actions-container">
                 {booking.status === 'active' && (
-                  <button onClick={() => handleOpenUpdateModal(booking)}>
-                    Update
-                  </button>
+                  <>
+                    <button onClick={() => handleOpenUpdateModal(booking)}>Update</button>
+                    <button onClick={() => handleMarkAsCompleted(booking._id)}>Mark as Complete</button>
+                  </>
                 )}
+                <button onClick={() => handleDeleteBooking(booking._id)}>Delete</button>
+              </td>
+              <td className='book-container'>
                 {booking.status === 'active' && (
-                  <button onClick={() => handleMarkAsCompleted(booking._id)}>
-                    Mark as Complete
-                  </button>
+                  <button onClick={() => handleBookAccept(booking._id)}>Accept</button>
                 )}
-                <button onClick={() => handleDeleteBooking(booking._id)}>
-                  Delete
-                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* Update Booking Modal */}
       {showUpdateModal && (
         <div className="modal">
           <div className="modal-content">
@@ -130,9 +132,7 @@ const AdminBookings = () => {
               <input
                 type="datetime-local"
                 value={updateData.pickupDate}
-                onChange={(e) =>
-                  setUpdateData({ ...updateData, pickupDate: e.target.value })
-                }
+                onChange={(e) => setUpdateData({ ...updateData, pickupDate: e.target.value })}
               />
             </label>
             <label>
@@ -140,9 +140,7 @@ const AdminBookings = () => {
               <input
                 type="datetime-local"
                 value={updateData.dropoffDate}
-                onChange={(e) =>
-                  setUpdateData({ ...updateData, dropoffDate: e.target.value })
-                }
+                onChange={(e) => setUpdateData({ ...updateData, dropoffDate: e.target.value })}
               />
             </label>
             <button onClick={handleUpdateBooking}>Save Changes</button>

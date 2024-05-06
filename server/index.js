@@ -312,8 +312,108 @@ app.post('/bookedcarDetails', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+// Endpoint to fetch all cars
+app.get("/cars", async (req, res) => {
+    try {
+        const cars = await Car.find();
+        res.json(cars);
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+app.get("/bookings", async (req, res) => {
+    try {
+        const bookings = await Booking.find();
+        res.json(bookings);
+    } catch (error) {
+        console.error('Error fetching bookings:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Update booking details
+app.put("/bookings/:bookingID", async (req, res) => {
+    const { bookingID } = req.params;
+    const { pickupDate, pickupTime, dropoffDate, dropoffTime } = req.body;
+
+    try {
+        const booking = await Booking.findById(bookingID);
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        booking.pickupDate = pickupDate;
+        booking.pickupTime = pickupTime;
+        booking.dropoffDate = dropoffDate;
+        booking.dropoffTime = dropoffTime;
+
+        await booking.save();
+        res.json({ message: 'Booking updated successfully', booking });
+    } catch (error) {
+        console.error('Error updating booking:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Mark booking as completed
+app.put("/bookings/:bookingID/complete", async (req, res) => {
+    const { bookingID } = req.params;
+
+    try {
+        const booking = await Booking.findById(bookingID);
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        booking.status = 'completed';
+        await booking.save();
+        res.json({ message: 'Booking marked as completed', booking });
+    } catch (error) {
+        console.error('Error marking booking as completed:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+app.delete('/bookings/:bookingID', async (req, res) => {
+    const { bookingID } = req.params;
+
+    try {
+        const deletedBooking = await Booking.findByIdAndDelete(bookingID);
+        if (!deletedBooking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+        res.json({ message: 'Booking deleted successfully', deletedBooking });
+    } catch (error) {
+        console.error('Error deleting booking:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint to fetch available cars
+app.get("/cars/available", async (req, res) => {
+    try {
+        const availableCars = await Car.find({ availability: true });
+        res.json(availableCars);
+    } catch (error) {
+        console.error('Error fetching available cars:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
 
 
+// Update car details including image
+app.put('/updateCar/:carID', async (req, res) => {
+    const { carID } = req.params;
+    const updatedCarData = req.body;
+
+    try {
+        const updatedCar = await Car.findOneAndUpdate({ carID }, updatedCarData, { new: true });
+        res.json(updatedCar);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update car' });
+    }
+});
 
 
 app.listen(3002, () => {

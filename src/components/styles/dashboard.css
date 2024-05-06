@@ -1,146 +1,115 @@
+/* dashboard.css */
 
 .dashboard {
-  margin-top: 70px;
+  margin-top: 100px;
   padding: 0px 30px;
-  padding-bottom: 50px;
   display: flex;
-  background-color: #181b3a;
-  height: 100vh;
+  justify-content: center; /* Center the content horizontally */
+  margin-left: 260px; /* Adjust this value according to your sidebar width */
+  margin-top: 70px; /* Set margin-top to match the height of your top navigation bar */
 }
+
 .dashboard__wrapper {
-  width: calc(100% - 250px); 
-  padding-left: 250px; 
-}
-
-.single__card {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.single__card:nth-child(1) {
-  background: linear-gradient(#ef621c, #e1424e);
-}
-
-.single__card:nth-child(2) {
-  background: linear-gradient(#01d293, #56c57a);
-}
-
-.single__card:nth-child(3) {
-  background: #725cff;
-}
-
-.single__card:nth-child(4) {
-  background: #2884ff;
-}
-
-.card__content h4 {
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 400;
-}
-
-.card__content span {
-  color: #fff;
-  font-size: 2rem;
-}
-
-.card__icon {
-  font-size: 2rem;
-  font-weight: 400 !important;
-  color: rgba(255, 255, 255, 0.845);
+  width: 100%; /* Full width of the container */
+  max-width: 1200px; /* Optional: Set a maximum width */
 }
 
 .dashboard__cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  column-gap: 2rem;
+  gap: 20px; /* Adjust the gap between grid items */
 }
 
-.statics {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 2rem;
-  margin-top: 2rem;
-}
-
-.stats {
-  background: #181b3a;
-  padding: 30px;
-  border-radius: 5px;
-  height: 320px;
-  padding-bottom: 50px;
-}
-
-.tooltip__style {
-  background: var(--body-bg) !important;
-  color: #fff;
-}
-
-.stats__title {
-  color: #fff;
-  font-size: 1.2rem;
-  font-weight: 500;
-  margin-bottom: 20px;
-}
-
-.recommend__cars-wrapper {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 2rem;
-  column-gap: 2rem;
-}
-
-.recommend__car-card {
+.single__card {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #f0f0f0; /* Default background color */
+}
+
+.single__card .card__content {
+  text-align: center; /* Center content within the card */
+}
+
+.single__card h4 {
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.single__card span {
+  color: #666;
+  font-size: 1rem;
+}
+
+.card__image img {
+  width: 100%; /* Ensure the image fills the container */
+  border-radius: 5px;
+}
+
+/* Styling specific cards based on data */
+.single__card:nth-child(1) {
+  background: linear-gradient(#ef621c, #e1424e);
+  color: #fff;
+}
+
+.single__card:nth-child(2) {
+  background: linear-gradient(#01d293, #56c57a);
+  color: #fff;
+}
+
+.single__card:nth-child(3) {
+  background: #725cff;
+  color: #fff;
+}
+
+.single__card:nth-child(4) {
+  background: #2884ff;
+  color: #fff;
+}
+
+/* Styling for the card displaying total cars */
+.total__card {
+  background: #4caf50; /* Green background for the total cars card */
+  color: #fff;
+}
+
+.total__card button {
+  margin-top: 10px; /* Add space between total count and button */
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #4caf50;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.recommend__car-card:nth-child(1) {
-  background: #e1dfa4;
+.total__card button:hover {
+  background-color: #e0e0e0;
 }
-.recommend__car-card:nth-child(2) {
-  background: #e3ecf1;
-}
-.recommend__car-card:nth-child(3) {
-  background:#f4e3e5;
-}
-
-.recommend__car-top h5 {
+.pagination {
   display: flex;
-  align-items: center;
-  column-gap: 1rem;
-  color: #0b0c28;
-  margin-bottom: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.pagination button {
+  padding: 8px 12px;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
 }
 
-.recommend__car-top h5 span i {
-  font-size: 1.2rem;
+.pagination button:hover {
+  background-color: #f0f0f0;
 }
 
-.recommend__car-bottom h4 {
-  font-size: 1.3rem;
-  margin: 10px 0px;
-}
-
-.recommend__car-other {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.recommend__icons {
-  display: flex;
-  align-items: center;
-  column-gap: 1rem;
-}
-
-.recommend__icons p:nth-child(1) {
-  display: flex;
-  align-items: center;
-  column-gap: 1rem;
+.pagination button.active {
+  background-color: #007bff;
+  color: #fff;
 }
