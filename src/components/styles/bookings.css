@@ -1,147 +1,138 @@
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: "DM Sans", sans-serif;
-  
+/* Admin Bookings Dashboard Styling */
+.admin-bookings {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  margin-left: 265px; /* Adjust this value according to your sidebar width */
+  margin-top: 70px; /* Set margin-top to match the height of your top navigation bar */
 }
 
-ul {
-  list-style: none;
+.admin-bookings h2 {
+  color: #333;
 }
 
-a {
-  text-decoration: none;
-  color: unset;
-}
-
-.main__layout {
-  margin-left: 260px;
-}
-
-img {
+.admin-bookings table {
   width: 100%;
-}
-.bookings {
-  margin-top: 30px;
-  padding: 0px 30px;
-  padding-bottom: 50px;
-  background-color: #181b3a;
-  height: 100%;
-}
-.booking__wrapper {
-  width: calc(100% - 250px); 
-  padding-left: 250px; 
-}
-.booking__title {
-  font-size: 1.5rem;
-  color: #fff;
-  margin-bottom: 2rem;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-.filter__widget-wrapper {
+.admin-bookings table,
+.admin-bookings th,
+.admin-bookings td {
+  border: 1px solid #ddd;
+}
+
+.admin-bookings th,
+.admin-bookings td {
+  padding: 12px;
+  text-align: left;
+}
+
+.admin-bookings th {
+  background-color: #f2f2f2;
+}
+
+.admin-bookings tbody td {
+  background-color: #fff;
+}
+
+.admin-bookings tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.admin-bookings .actions-container {
   display: flex;
-  align-items: center;
-  column-gap: 1.5rem;
+  justify-content: space-between;
+  align-items: center; /* Center align items vertically */
 }
 
-.filter__widget-01 select,
-.filter__widget-02 select {
-  border: none;
-  padding: 7px 20px;
-  border-radius: 50px;
-  background: #181b3a;
+.admin-bookings .actions-container button {
+  padding: 8px 16px;
+  background-color: #007bff;
   color: #fff;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  margin-bottom: 2rem;
+  margin-right: 5px; /* Add margin between buttons */
+}
+.admin-bookings .book-container button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px; /* Add margin between buttons */
 }
 
-.car__item {
+.admin-bookings .actions-container button:last-child {
+  margin-right: 0; /* Remove margin from the last button */
+}
+
+.admin-bookings .actions-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Modal Styling */
+.modal {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+.modal-content {
+  background-color: #fff;
   padding: 20px;
   border-radius: 5px;
-  background: #181b3a;
-  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.car__item-tile {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.modal-content h2 {
+  margin-bottom: 10px;
+  color: #333; /* Text color for modal header */
 }
 
-.car__item-tile h3 {
-  font-size: 1.3rem;
+.modal-content label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.modal-content button {
+  padding: 8px 16px;
+  background-color: #007bff;
   color: #fff;
-  font-weight: 400;
-}
-
-.car__item-tile span i {
-  font-size: 1.3rem;
-  color: #808191;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  margin-right: 10px;
 }
 
-.car__item-top p {
-  color: #808191;
-  font-size: 0.9rem;
-  font-weight: 400;
+.modal-content button:last-child {
+  margin-right: 0;
 }
 
-.car__item-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.modal-content button:hover {
+  background-color: #0056b3;
 }
 
-.car__bottom-left {
-  display: flex;
-  align-items: center;
-  column-gap: 1.5rem;
-}
+/* Additional Styling for Booked Status */
+.admin-bookings tbody td.booked {
 
-.car__bottom-left p {
-  display: flex;
-  align-items: center;
-  column-gap: 8px;
-  color: rgba(255, 255, 255, 0.829);
-  font-weight: 300 !important;
-}
-
-.car__bottom-left p i {
-  color: #01d293;
-}
-
-.car__rent {
-  color: rgba(255, 255, 255, 0.829);
-  font-size: 1.1rem;
-}
-
-.booking__car-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 2rem;
-  row-gap: 2rem;
-}
-
-.car__item-tile h3 {
-  font-size: 1rem;
-  font-weight: 400;
-}
-
-.car__item-top {
-  margin-bottom: 15px;
-}
-
-.car__img {
-  margin-bottom: 20px;
-}
-
-.car__item:nth-child(2) .car__img img,
-.car__item:nth-child(6) .car__img img,
-.car__item:nth-child(8) .car__img img {
-  width: 75%;
-}
-
-.car__item:nth-child(4) .car__img img {
-  width: 85%;
+  background-color: #0056b3; /* Light green background for booked status */
+  color: #155724; /* Dark green text color for booked status */
+  font-weight: bold; /* Bold font for booked status */
 }

@@ -374,6 +374,27 @@ app.put("/bookings/:bookingID/complete", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+app.put('/bookings/:bookingID/booked', async (req, res) => {
+    const { bookingID } = req.params;
+  
+    try {
+      // Find the booking by ID
+      const booking = await Booking.findById(bookingID);
+  
+      if (!booking) {
+        return res.status(404).json({ message: 'Booking not found' });
+      }
+  
+      // Update the booking status to 'booked'
+      booking.status = 'booked';
+      await booking.save();
+  
+      res.json({ message: 'Booking marked as booked', booking });
+    } catch (error) {
+      console.error('Error marking booking as booked:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 
 app.delete('/bookings/:bookingID', async (req, res) => {
     const { bookingID } = req.params;
