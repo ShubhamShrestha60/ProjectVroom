@@ -35,11 +35,11 @@ export const Navbar = ({ isLoggedIn }) => {
         </li>
         {isLoggedIn ? ( // Render profile if user is logged in
             <li>
-              <NavLink to="/profile">Profile</NavLink>
+              <NavLink to="/profile">{localStorage.getItem('firstName')}</NavLink>
             </li>
           ) : (
             <li>
-              <p><Link to="/login">Login/Signup</Link></p>
+              <NavLink to="/login">Login/Signup</NavLink>
             </li>
           )}
       </ul>

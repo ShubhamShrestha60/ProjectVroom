@@ -49,7 +49,7 @@ const Detail = () => {
             flex:"1",
            },
            img:{
-              height:"350px"
+              height:"300px"
            },
            information:{
 

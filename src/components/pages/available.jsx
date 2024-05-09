@@ -11,7 +11,7 @@ const Available = () => {
         const fetchCars = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:3001/cars?page=${page}&limit=10`);
+                const response = await axios.get(`http://localhost:3002/cars?page=${page}&limit=10`);
                 console.log('Raw API Response:', response.data); // Log the raw response for inspection
                 
                 // Filter cars where availability is true
@@ -44,7 +44,7 @@ const Available = () => {
                         </div>
                         {car.imageUrl && (
                             <div className="card__pic">
-                                <img src={`http://localhost:3001/${car.imageUrl}`} alt={car.brand} />
+                                <img src={`http://localhost:3002/${car.imageUrl}`} alt={car.brand} />
                             </div>
                         )}
                     </div>

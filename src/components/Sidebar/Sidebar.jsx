@@ -4,6 +4,8 @@ import navLinks from "../../assets/dummy-data/navLinks";
 import "./sidebar.css";
 
 const Sidebar = () => {
+  const handleLogout = () => {
+  };
 
   return (
     <div className="sidebar">
@@ -24,7 +26,7 @@ const Sidebar = () => {
                 <NavLink
                   to={item.path}
                   className={(navClass) =>
-                    navClass.isActive ? "nav__active nav__link" : "nav__link"
+                    navClass.isActive ? "nav_active navlink" : "nav_link"
                   }
                 >
                   <i className={item.icon}></i>
@@ -36,9 +38,12 @@ const Sidebar = () => {
         </div>
 
         <div className="sidebar__bottom">
-          <span>
-            <i className="ri-logout-circle-r-line"></i> Logout
-          </span>
+          {/* Use NavLink directly for logout with 'to' prop */}
+          <NavLink to="/adminlogin" className="nav__link" onClick={handleLogout}>
+            <span>
+              <i className="ri-logout-circle-r-line"></i> Logout
+            </span>
+          </NavLink>
         </div>
       </div>
     </div>

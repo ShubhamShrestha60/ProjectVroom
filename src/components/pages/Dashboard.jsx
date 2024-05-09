@@ -11,7 +11,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchCars = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/cars?page=${currentPage}&limit=${carsPerPage}`);
+                const response = await axios.get(`http://localhost:3002/cars?page=${currentPage}&limit=${carsPerPage}`);
                 setCars(response.data);
                 setTotalCars(response.headers['x-total-count']);
             } catch (error) {
@@ -63,7 +63,7 @@ const Dashboard = () => {
                             </div>
                             {car.imageUrl && (
                                 <div className="card__image">
-                                    <img src={`http://localhost:3001/${car.imageUrl}`} alt={car.brand} />
+                                    <img src={`http://localhost:3002/${car.imageUrl}`} alt={car.brand} />
                                 </div>
                             )}
                         </div>

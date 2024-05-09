@@ -35,7 +35,17 @@ app.post("/login", async (req, res) => {
         }
 
         if (user.password === password) {
-            res.json("Success");
+            // Fetch additional user details from the database
+            const { phoneNumber, firstName, lastName } = user;
+
+            // Prepare data to send back to the client
+            const userData = {
+                phoneNumber: phoneNumber,
+                firstName: firstName,
+                lastName: lastName
+            };
+
+            res.json({ message: "Success", userData: userData });
         } else {
             res.json("Incorrect password");
         }
@@ -255,9 +265,11 @@ app.post('/booking', upload.single('image'), async (req, res) => {
         const { email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate } = req.body;
         const LicensePhoto = req.file ? req.file.path : null;
 
-        // Create a new booking record
-        const newBooking = new Booking({ email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate, LicensePhoto });
+        const newBooking = new bookingModel({ email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate, LicensePhoto });
         await newBooking.save();
+        
+        await sendBookingSuccessEmail(email, newBooking.bookingID);
+        res.status(201).json({ message: 'Booking Successfull', booking: newBooking });
 
         // Update car availability to false
         const updatedCar = await Car.findOneAndUpdate(
@@ -270,10 +282,9 @@ app.post('/booking', upload.single('image'), async (req, res) => {
             return res.status(404).json({ error: 'Car not available for booking' });
         }
 
-        res.status(201).json({ message: 'Booking successful', booking: newBooking });
     } catch (error) {
-        console.error('Error booking car:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Error creating booking:', error);
+        res.status(500).json({ error: 'internal server error' });
     }
 });
 
@@ -312,6 +323,30 @@ app.post('/bookedcarDetails', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+app.delete('/cancelBooking/:bookingID', async (req, res) => {
+    try {
+        const bookingID = req.params.bookingID;
+        const cancelledBooking = await bookingModel.findOneAndDelete({ bookingID: bookingID });
+
+        if (!cancelledBooking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        res.json({ message: 'Booking cancelled successfully', cancelledBooking });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to cancel booking', error: error.message });
+    }
+});
+
+
+
+
+
+
+
+
+
 // Endpoint to fetch all cars
 app.get("/cars", async (req, res) => {
     try {
@@ -324,7 +359,7 @@ app.get("/cars", async (req, res) => {
 
 app.get("/bookings", async (req, res) => {
     try {
-        const bookings = await Booking.find();
+        const bookings = await bookingModel.find();
         res.json(bookings);
     } catch (error) {
         console.error('Error fetching bookings:', error);
@@ -338,7 +373,7 @@ app.put("/bookings/:bookingID", async (req, res) => {
     const { pickupDate, pickupTime, dropoffDate, dropoffTime } = req.body;
 
     try {
-        const booking = await Booking.findById(bookingID);
+        const booking = await bookingModel.findById(bookingID);
         if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
@@ -361,7 +396,7 @@ app.put("/bookings/:bookingID/complete", async (req, res) => {
     const { bookingID } = req.params;
 
     try {
-        const booking = await Booking.findById(bookingID);
+        const booking = await bookingModel.findById(bookingID);
         if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
@@ -374,33 +409,12 @@ app.put("/bookings/:bookingID/complete", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
-app.put('/bookings/:bookingID/booked', async (req, res) => {
-    const { bookingID } = req.params;
-  
-    try {
-      // Find the booking by ID
-      const booking = await Booking.findById(bookingID);
-  
-      if (!booking) {
-        return res.status(404).json({ message: 'Booking not found' });
-      }
-  
-      // Update the booking status to 'booked'
-      booking.status = 'booked';
-      await booking.save();
-  
-      res.json({ message: 'Booking marked as booked', booking });
-    } catch (error) {
-      console.error('Error marking booking as booked:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
-    }
-});
 
 app.delete('/bookings/:bookingID', async (req, res) => {
     const { bookingID } = req.params;
 
     try {
-        const deletedBooking = await Booking.findByIdAndDelete(bookingID);
+        const deletedBooking = await bookingModel.findByIdAndDelete(bookingID);
         if (!deletedBooking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
@@ -435,6 +449,12 @@ app.put('/updateCar/:carID', async (req, res) => {
         res.status(500).json({ error: 'Failed to update car' });
     }
 });
+
+
+
+
+
+
 
 
 app.listen(3002, () => {

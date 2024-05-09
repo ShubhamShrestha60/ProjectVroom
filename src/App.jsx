@@ -7,7 +7,7 @@ import { Navbar } from "./components/Header/Navbar";
 import { Footer } from "./components/footer/footer";
 import Sidebar from "./components/Sidebar/Sidebar";
 import TopNav from "./components/TopNav/TopNav";
-import Booking from "./components/pages/adminBookings";
+
 import Dashboard from "./components/pages/Dashboard";
 import AddCar from "./components/pages/addCar";
 import AdminLogin from "./components/admin/adminLogin";
@@ -15,10 +15,10 @@ import AdminSignup from "./components/admin/adminSignup";
 import Cars from "./components/SearchResults/cars";
 import Bookings from "./components/SearchResults/booking";
 import Profile from "./components/user_profile/profile";
-import Available from "./pages/available";
+import Available from "./components/pages/available";
 import Detail from "./components/SearchResults/detail";
-import AdminBookings from "./pages/adminBookings";
-import CarManagement from "./pages/carManagement";
+import AdminBookings from "./components/pages/adminBookings";
+import CarManagement from "./components/pages/carManagement";
 
 export default function App() {
   const [results, setResults] = useState([]);
@@ -63,7 +63,7 @@ export default function App() {
           <Route path="/available" element={<AvailableLayout />} />
           <Route path="/carmanagement" element={<CarManagementLayout />} />
           <Route path="/adminbookings" element={<AdminBookingLayout />} />
-          <Route path="/bookings" element={<BookingLayout />} />
+          <Route path="/bookings" element={<AdminBookingLayout />} />
           <Route path="/dashboard" element={<DashboardLayout />} />
           <Route path="/addcar" element={<AddCarLayout />} />
           <Route path="/adminSignup" element={<AdminSignup />} />
@@ -122,4 +122,3 @@ const AddCarLayout = () => {
     </>
   );
 };
-

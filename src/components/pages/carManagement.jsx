@@ -7,7 +7,7 @@ const CarManagement = () => {
         carID: '',
         brand: '',
         fuelType: '',
-        transmissionType: '',
+        transitionType: '',
         segment: '',
         price: '',
         location: '',
@@ -22,7 +22,7 @@ const CarManagement = () => {
 
     const fetchCars = async () => {
         try {
-            const response = await fetch('http://localhost:3001/cars');
+            const response = await fetch('http://localhost:3002/cars');
             if (response.ok) {
                 const data = await response.json();
                 setCars(data);
@@ -49,7 +49,7 @@ const CarManagement = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`http://localhost:3001/updateCar/${formData.carID}`, {
+            const response = await fetch(`http://localhost:3002/updateCar/${formData.carID}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -74,7 +74,7 @@ const CarManagement = () => {
 
     const handleDeleteCar = async (carID) => {
         try {
-            const response = await fetch(`http://localhost:3001/deleteCar/${carID}`, {
+            const response = await fetch(`http://localhost:3002/deleteCar/${carID}`, {
                 method: 'DELETE'
             });
 
@@ -99,7 +99,7 @@ const CarManagement = () => {
                         <th>Car ID</th>
                         <th>Brand</th>
                         <th>Fuel Type</th>
-                        <th>Transmission Type</th>
+                        <th>Transition Type</th>
                         <th>Segment</th>
                         <th>Price</th>
                         <th>Location</th>
@@ -114,7 +114,7 @@ const CarManagement = () => {
                             <td>{car.carID}</td>
                             <td>{car.brand}</td>
                             <td>{car.fuelType}</td>
-                            <td>{car.transmissionType}</td>
+                            <td>{car.transitionType}</td>
                             <td>{car.segment}</td>
                             <td>{car.price}</td>
                             <td>{car.location}</td>
@@ -153,11 +153,11 @@ const CarManagement = () => {
                             onChange={handleChange}
                         />
 
-                        <label>Transmission Type:</label>
+                        <label>Transition Type:</label>
                         <input
                             type="text"
-                            name="transmissionType"
-                            value={formData.transmissionType}
+                            name="transitionType"
+                            value={formData.transitionType}
                             onChange={handleChange}
                         />
 

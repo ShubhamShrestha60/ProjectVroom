@@ -149,7 +149,7 @@ button {
 .dropoff_suggestions {
     position: absolute;
     top: calc(100% + 5px); /* Position the suggestions just below the input field */
-    left: 27vw;
+    left: 38vw;
     width: 35%;
     background-color: white;
     border: 1px solid #ccc;

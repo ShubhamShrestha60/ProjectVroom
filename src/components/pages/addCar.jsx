@@ -19,7 +19,7 @@ const AddCar = () => {
     formData.append('carID', e.target.carID.value);
     formData.append('brand', e.target.brand.value);
     formData.append('fuelType', e.target.fuelType.value);
-    formData.append('transmissionType', e.target.transmissionType.value);
+    formData.append('transitionType', e.target.transitionType.value);
     formData.append('segment', e.target.segment.value);
     formData.append('price', e.target.price.value);
     formData.append('location', e.target.location.value);
@@ -28,7 +28,7 @@ const AddCar = () => {
     formData.append('image', image); // Append image file
     
     try {
-      const response = await fetch('http://localhost:3001/addCar', { 
+      const response = await fetch('http://localhost:3002/addCar', { 
           method: 'POST',
           body: formData,
       });
@@ -65,8 +65,8 @@ const AddCar = () => {
           </select>
         </div>
         <div className="add-car__form-group">
-          <label htmlFor="transmissionType">Transmission Type:</label>
-          <select id="transmissionType" name="transmissionType">
+          <label htmlFor="transitionType">Transition Type:</label>
+          <select id="transitionType" name="transitionType">
             <option value="Manual">Manual</option>
             <option value="Automatic">Automatic</option>
           </select>

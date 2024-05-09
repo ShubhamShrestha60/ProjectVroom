@@ -31,13 +31,13 @@ const Listing = ({ results }) => {
     },
     first: {
       flex: "0.5",
-      marginTop: "15px",
+    
     },
     second: {
       flex: "0.5",
       textAlign: "right",
       marginRight: "20px",
-      marginTop: "15px",
+     
     },
     hero: {
       display: "grid",
@@ -65,7 +65,7 @@ const Listing = ({ results }) => {
               <div className="first" style={styles.first}>
                 <h4>Brand: {car.brand}</h4>
                 <p>Fuel Type: {car.fuelType}</p>
-                <p style={{ marginTop: "0px" }}>
+                <p style={{ marginTop: "-15px" }}>
                   Transistion Type: {car.transitionType}
                 </p>
               </div>

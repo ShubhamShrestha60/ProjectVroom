@@ -19,7 +19,7 @@ export const Footer = () => {
     <footer className="footer">
       <div className="container">
         <div className="left-content">
-          <h2>Vroom</h2>
+          <h2 style={{color:"white"}}>Vroom</h2>
           <p className="sub-text">YOUR TRUSTED CAR RENTAL.</p> 
         </div>
         <div className="right-content">

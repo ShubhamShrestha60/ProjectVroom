@@ -122,8 +122,8 @@ export default function Booking(){
             display: 'flex',
             justifyContent: 'center',
             // alignItems: 'center',
-            marginTop:"20px",
-            height: '90vh',
+            // marginTop:"20px",
+            height: '100vh',
             
         },
         form: {
@@ -196,7 +196,7 @@ export default function Booking(){
         },
 
         driving_detail:{
-            marginTop:"40px",
+            marginTop:"20px",
             display:"grid",
             gridTemplateRows:"1fr 1fr",
 

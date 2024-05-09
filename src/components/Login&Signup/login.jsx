@@ -41,20 +41,28 @@ const togglePasswordVisibility = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post('http://localhost:3002/login', formData)
-      .then(result => {
+    .then(result => {
         console.log(result);
-        if (result.data === "Success") {
-          localStorage.setItem("isLoggedIn", "true"); // Set isLoggedIn to true in localStorage
-          localStorage.setItem("userEmail",formData.email );
-          setIsLoggedIn(true);
-          setShowPopup(true); // Show popup upon successful login
-          setTimeout(() => {
-            setShowPopup(false); // Hide popup after some time
-            navigate('/home'); // Navigate to home page upon successful login
-          }, 2000); // Hide popup after 3 seconds
+        if (result.data.message === "Success") {
+            // Extract user data from the response
+            const { phoneNumber, firstName, lastName } = result.data.userData;
+
+            // Store user data and login status in local storage
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("userEmail", formData.email);
+            localStorage.setItem("phoneNumber", phoneNumber);
+            localStorage.setItem("firstName", firstName);
+            localStorage.setItem("lastName", lastName);
+
+            setIsLoggedIn(true);
+            setShowPopup(true); // Show popup upon successful login
+            setTimeout(() => {
+                setShowPopup(false); // Hide popup after some time
+                navigate('/home'); // Navigate to home page upon successful login
+            }, 2000); // Hide popup after 3 seconds
         }
-      })
-      .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
   };
 
   const styles = {

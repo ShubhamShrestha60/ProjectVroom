@@ -2,8 +2,8 @@
 .admin-bookings {
   font-family: Arial, sans-serif;
   margin: 20px;
-  margin-left: 265px; /* Adjust this value according to your sidebar width */
-  margin-top: 70px; /* Set margin-top to match the height of your top navigation bar */
+  margin-left: 300px; /* Adjust this value according to your sidebar width */
+  margin-top: 100px; /* Set margin-top to match the height of your top navigation bar */
 }
 
 .admin-bookings h2 {

@@ -15,7 +15,7 @@ const AdminBookings = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/bookings`);
+      const response = await axios.get(`http://localhost:3002/bookings`);
       if (Array.isArray(response.data)) {
         setBookings(response.data);
       } else {
@@ -44,7 +44,7 @@ const AdminBookings = () => {
   const handleUpdateBooking = async () => {
     try {
       const { bookingID, ...updatedFields } = updateData;
-      await axios.put(`http://localhost:3001/bookings/${bookingID}`, updatedFields);
+      await axios.put(`http://localhost:3002/bookings/${bookingID}`, updatedFields);
       fetchBookings();
       setShowUpdateModal(false);
     } catch (error) {
@@ -54,25 +54,17 @@ const AdminBookings = () => {
 
   const handleMarkAsCompleted = async (bookingID) => {
     try {
-      await axios.put(`http://localhost:3001/bookings/${bookingID}/complete`);
+      await axios.put(`http://localhost:3002/bookings/${bookingID}/complete`);
       fetchBookings();
     } catch (error) {
       console.error('Error marking booking as completed:', error);
     }
   };
 
-  const handleBookAccept = async (bookingID) => {
-    try {
-      await axios.put(`http://localhost:3001/bookings/${bookingID}/booked`);
-      fetchBookings();
-    } catch (error) {
-      console.error('Error updating booking status to booked:', error);
-    }
-  };
 
   const handleDeleteBooking = async (bookingID) => {
     try {
-      await axios.delete(`http://localhost:3001/bookings/${bookingID}`);
+      await axios.delete(`http://localhost:3002/bookings/${bookingID}`);
       fetchBookings();
     } catch (error) {
       console.error('Error deleting booking:', error);
@@ -92,7 +84,7 @@ const AdminBookings = () => {
             <th>Dropoff Date & Time</th>
             <th>Status</th>
             <th>Actions</th>
-            <th>Book</th>
+       
           </tr>
         </thead>
         <tbody>
@@ -112,12 +104,7 @@ const AdminBookings = () => {
                   </>
                 )}
                 <button onClick={() => handleDeleteBooking(booking._id)}>Delete</button>
-              </td>
-              <td className='book-container'>
-                {booking.status === 'active' && (
-                  <button onClick={() => handleBookAccept(booking._id)}>Accept</button>
-                )}
-              </td>
+              </td>        
             </tr>
           ))}
         </tbody>
