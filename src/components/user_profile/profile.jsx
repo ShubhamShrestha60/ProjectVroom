@@ -135,10 +135,10 @@ const Profile = () => {
 
               <h2 style={{textDecoration:"underline"}}>User information</h2>
 
-              <p>FirstName:{localStorage.getItem('firstName')}</p>
-              <p>LastName:{localStorage.getItem('firstName')}</p>
-              <p>Email:{localStorage.getItem('userEmail')}</p>
-              <p>PhoneNumber:{localStorage.getItem('phoneNumber')}</p>
+              <p>FirstName:  {localStorage.getItem('firstName')}</p>
+              <p>LastName:  {localStorage.getItem('lastName')}</p>
+              <p>Email:  {localStorage.getItem('userEmail')}</p>
+              <p>PhoneNumber:  {localStorage.getItem('phoneNumber')}</p>
             </div>
 
 

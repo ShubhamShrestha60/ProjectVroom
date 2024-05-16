@@ -1,5 +1,5 @@
 import logo from "./logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types'; // Import PropTypes
@@ -14,6 +14,7 @@ export default function Test({ setIsLoggedIn }) {
     password: ''
   });
   const [showPopup, setShowPopup] = useState(false);
+  const [showVerifyPopup, setShowVerifyPopup] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false); // State to control password visibility
 const togglePasswordVisibility = () => {
@@ -22,7 +23,8 @@ const togglePasswordVisibility = () => {
 
   
   const navigate = useNavigate();
-  
+  const location = useLocation(); 
+
   useEffect(() => {
     const loggedInStatus = localStorage.getItem('isLoggedIn');
     if (loggedInStatus === 'true') {
@@ -30,6 +32,15 @@ const togglePasswordVisibility = () => {
     }
   }, []); // Empty dependency array to run the effect only once
  
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    if (queryParams.get('fromRegister') === 'true') {
+      setShowVerifyPopup(true);
+    }
+  }, [location.search]);
+
+
    
   const handleChange = (e) => {
     setFormData({
@@ -201,7 +212,18 @@ const togglePasswordVisibility = () => {
           <p>Login Successful!</p>
         </div>
       )}
+
+    {showVerifyPopup && (
+     <div style={styles.popup}>
+    <p>Please verify your email.</p>
+    <button onClick={() => setShowVerifyPopup(false)} style={{width:"50%"}}>OK</button>
     </div>
+    )}
+
+
+    </div>
+
+    
   );
 }
 Test.propTypes = {

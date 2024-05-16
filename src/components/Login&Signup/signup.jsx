@@ -60,17 +60,15 @@ export default function Test() {
     if (!formData.password) {
       setPasswordError('Password field should not be empty');
       return;
-    // } else if (!/^(?=.[a-z])(?=.[A-Z])(?=.*[@])(?=.{8,})/.test(formData.password)) {
-    //   setPasswordError('Password must contain at least one lowercase letter, one uppercase letter, one "@" symbol, and be at least eight characters long');
-    //   return;
     }
     axios.post('http://localhost:3002/register', formData)
       .then(result => {
         console.log(result);
-        navigate('/login');
+        navigate('/login?fromRegister=true');
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err) );
     console.log(formData);
+    
   };
 
 
