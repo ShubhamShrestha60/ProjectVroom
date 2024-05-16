@@ -5,7 +5,7 @@ import logo1 from "./location.png";
 import logo2 from "./car.png";
 import logo3 from "./car.jpg"
 import './home.css';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types'; 
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
@@ -188,8 +188,8 @@ export const Home = ({setResults}) => {
     );
 }
 
-// Add prop types validation
+
 Home.propTypes = {
-    setResults: PropTypes.func.isRequired,// Ensure results is an array and required
+    setResults: PropTypes.func.isRequired,
   };
 export default Home;
