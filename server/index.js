@@ -160,7 +160,7 @@ app.post("/adminLogin", (req, res) => {
                     res.json("Success");
 
                 } else {
-                    res.json("Incorrect password");
+                    res.json("Sorry! Incorrect password");
                 }
             } else {
                 res.json("No record existed");
