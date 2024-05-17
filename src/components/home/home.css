@@ -108,6 +108,42 @@ button {
     
 }
 
+.whychooseus {
+    color: black;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+    text-align: center;
+  align-items: center;
+  justify-content: center;
+    
+    
+    
+}
+.whychooseus_main{
+    background-color:white; 
+    
+}
+
+
+
+
+.journey{
+    
+    color: white;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+ 
+  align-items: center;
+  justify-content: center;
+}
+
+
+
 .img {
     width: 150px;
     height: 150px;
@@ -149,7 +185,7 @@ button {
 .dropoff_suggestions {
     position: absolute;
     top: calc(100% + 5px); /* Position the suggestions just below the input field */
-    left: 38vw;
+    left: 35vw;
     width: 35%;
     background-color: white;
     border: 1px solid #ccc;

@@ -1,0 +1,66 @@
+/* General styles */
+.Partners {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 0 5%;
+}
+
+.Partners__Images {
+  width: 150px;
+  padding: 1%;
+}
+
+/* Image styles */
+.Partners__Images > img {
+  width: 100%;
+  border: 1px solid transparent;
+  transition: all 0.5s ease; /* Smooth transition for hover effect */
+}
+
+.Partners__Images > img:hover {
+  border-radius: 5%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add box-shadow on hover */
+}
+
+/* Journey section styles */
+.Journey {
+  padding: 5%;
+  /* Uncomment the following line if you want a background gradient */
+  /* background-image: linear-gradient(#ffffff, #f6f6f6); */
+}
+
+.Journey__Icons__Container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Automatic column sizing */
+  gap: 20px; /* Adjust the gap between grid items */
+  justify-content: center; /* Center align items horizontally */
+  align-items: center; /* Center align items vertically */
+  margin-top: 60px;
+}
+
+.Journey__Icons {
+  text-align: center; /* Center align icon and text */
+}
+
+/* Icon styles */
+.Journey__Icons > div {
+  margin-top: 20%;
+}
+
+.icon {
+  font-size: 70px; /* Adjust the size of the icon */
+  color: white; /* Adjust the color of the icon */
+  margin-bottom: 10px;
+}
+
+/* Journey__Icons img styles */
+.Journey__Icons img {
+  max-width: 100%; /* Ensure icon images don't exceed their container */
+  height: auto; /* Maintain aspect ratio */
+}
+
+/* Add any additional styles for the CustomerReviews section if needed */
+.CustomerReviews {
+  margin: 5%;
+}

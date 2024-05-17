@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom'; 
+import { Link, useLocation } from 'react-router-dom'; 
 import "./footer.css";
 
 export const Footer = () => {
@@ -10,6 +10,26 @@ export const Footer = () => {
   // Check if the current location is in the array of hidden paths
   const isHidden = hiddenPaths.includes(location.pathname);
 
+
+  const scroll = () => {
+    const element = document.getElementById('whyus');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    
+  };
+         
+   
+
+  const scrollJourney = () => {
+    const element = document.getElementById('our_journey');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+ 
   // If the current path is in the hiddenPaths array, don't render the footer
   if (isHidden) {
     return null;
@@ -24,13 +44,12 @@ export const Footer = () => {
         </div>
         <div className="right-content">
           <div className="footer-links">
-            <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Services</a></li>
-              <li><a href="#">FAQ</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
+          <ul>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/" onClick={scroll}>Why Us</Link></li> 
+                <li><Link to="/" onClick={scrollJourney}>Our Journey</Link></li> 
+                
+              </ul>
           </div>
         </div>
       </div>

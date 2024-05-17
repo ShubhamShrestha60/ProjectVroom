@@ -8,8 +8,8 @@ import './home.css';
 import PropTypes from 'prop-types'; 
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-
-
+import Journey from "./TestimonialsOpen";
+import Whychooseus from "./whychooseus";
 
 
 export const Home = ({setResults}) => {
@@ -182,6 +182,27 @@ export const Home = ({setResults}) => {
                 </div>
             </div>
             </div>
+
+            <div className="journey_main" id="our_journey">
+                <div className="journey">
+
+                <Journey/>
+                </div>
+                
+            </div>
+             
+             <div className="whychooseus_main" id="whyus">
+
+                <div className="whychooseus">
+                 <Whychooseus/>
+                </div>
+             </div>
+            
+
+
+
+
+
             </div>
         
         
