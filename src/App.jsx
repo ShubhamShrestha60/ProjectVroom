@@ -19,7 +19,7 @@ import Available from "./components/pages/available";
 import Detail from "./components/SearchResults/detail";
 import AdminBookings from "./components/pages/adminBookings";
 import CarManagement from "./components/pages/carManagement";
-import AdminRoute from "./components/admin/AdminRoute";
+
 
 export default function App() {
   const [results, setResults] = useState([]);
@@ -62,46 +62,11 @@ export default function App() {
           <Route path="/login" element={<Login  setIsLoggedIn={setIsLoggedIn}/>} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/available" element={<AvailableLayout />} />
-          <Route
-            path="/dashboard"
-            element={
-              <AdminRoute isLoggedIn={isLoggedIn}>
-                <DashboardLayout />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/notification"
-            element={
-              <AdminRoute isLoggedIn={isLoggedIn}>
-                <NotificationLayout/>
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/carmanagement"
-            element={
-              <AdminRoute isLoggedIn={isLoggedIn}>
-                <CarManagementLayout />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/addcar"
-            element={
-              <AdminRoute isLoggedIn={isLoggedIn}>
-                <AddCarLayout />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/adminbookings"
-            element={
-              <AdminRoute isLoggedIn={isLoggedIn}>
-                <AdminBookingLayout/>
-              </AdminRoute>
-            }
-          />
+          <Route path="/addcar" element={<AddCarLayout />} />
+          <Route path="/dashboard" element={<DashboardLayout />} />
+          <Route path="/notification" element={<NotificationLayout />} />
+          <Route path="/carManagement" element={<CarManagementLayout />} />
+          <Route path="/adminBookings" element={<AdminBookingLayout />} />
           <Route path="/adminSignup" element={<AdminSignup />} />
           <Route path="/adminLogin" element={<AdminLogin />} />
         </Routes>
