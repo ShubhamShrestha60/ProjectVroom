@@ -14,19 +14,10 @@ const TopNav = () => {
             <i className="ri-search-line"></i>
           </span>
         </div>
-        <div className="top__nav-right">
-          <span className="notification">
-            <i className="ri-notification-3-line"></i>
-            <span className="badge">1</span>
-          </span>
-          <div className="profile">
-            <Link to="/settings">
-              <img src={profileImg} alt="" />
-            </Link>
-          </div>
+       
         </div>
       </div>
-    </div>
+    
   );
 };
 
