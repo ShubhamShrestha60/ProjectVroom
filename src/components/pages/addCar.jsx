@@ -3,6 +3,10 @@ import "../styles/addCar.css";
 
 const AddCar = () => {
   const [image, setImage] = useState(null);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState(null);
+
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -26,6 +30,11 @@ const AddCar = () => {
     formData.append('condition', e.target.condition.value);
     formData.append('image', image); // Append image file
     
+    setFormData(formData);
+    setShowModal(true);
+  };
+
+  const handleConfirmSubmit = async () => {
     try {
       const response = await fetch('http://localhost:3002/addCar', { 
           method: 'POST',
@@ -34,14 +43,21 @@ const AddCar = () => {
 
       if (response.ok) {
           const data = await response.json();
-          console.log('Car added successfully:', data.car);
+          setConfirmationMessage('Car added successfully: ' + data.car);
+          console.log('car added successfully: '+data.car);
       } else {
-          console.error('Failed to add car:', response.statusText);
+         setConfirmationMessage('Failed to add car: ' + response.statusText);
       }
-  } catch (error) {
-      console.error('Failed to add car:', error.message);
-  }
-};
+    } catch (error) {
+       setConfirmationMessage('Failed to add car: ' + error.message);
+    } finally {
+       setShowModal(false);
+    }
+  };
+
+  const handleCancelSubmit = () => {
+    setShowModal(false);
+  };
 
 
   return (
@@ -94,6 +110,20 @@ const AddCar = () => {
           Add Car
         </button>
       </form>
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h4>Confirm Car Addition</h4>
+            <p>Are you sure you want to add this car?</p>
+            <button onClick={handleConfirmSubmit}>Confirm</button>
+            <button onClick={handleCancelSubmit}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {confirmationMessage && (
+        <div className="confirmation-message">{confirmationMessage}</div>
+      )}
     </div>
     
   );

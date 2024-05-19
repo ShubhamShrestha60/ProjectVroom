@@ -69,7 +69,8 @@ const Profile = () => {
             // Send cancellation notification to the database
         const cancellationNotification = {
             bookingID: bookingToDelete,
-            message: 'Booking has been cancelled by the user.'
+            message: `Booking was cancelled by ${email}.`
+
         };
 
         const notificationResponse = await axios.post('http://localhost:3002/sendCancellationNotification', cancellationNotification);

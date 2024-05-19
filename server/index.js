@@ -336,7 +336,7 @@ app.delete('/cancelBooking/:bookingID', async (req, res) => {
 
         // Update car availability to true
         const updatedCar = await Car.findOneAndUpdate(
-            { carID: cancelledBooking.carID },
+            { carID: booking.carID },
             { availability: true },
             { new: true }
         );
@@ -517,7 +517,14 @@ app.get('/notifications', async (req, res) => {
     }
 });
 
-
+app.delete('/notifications', async (req, res) => {
+    try {
+      await Notification.deleteMany({}); // Adjust according to your database
+      res.status(200).send({ message: 'All notifications deleted successfully' });
+    } catch (error) {
+      res.status(500).send({ error: 'Failed to delete notifications' });
+    }
+  });
 
 
 
