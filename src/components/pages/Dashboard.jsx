@@ -6,7 +6,9 @@ const Dashboard = () => {
     const [cars, setCars] = useState([]);
     const [totalCars, setTotalCars] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const [carsPerPage] = useState(10); // Number of cars to display per page
+    const carsPerPage = 10; // Number of cars to display per page
+  
+    
 
     useEffect(() => {
         const fetchCars = async () => {
@@ -20,7 +22,8 @@ const Dashboard = () => {
         };
 
         fetchCars();
-    }, [currentPage, carsPerPage]);
+    }, [currentPage]);
+
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -84,6 +87,7 @@ const Dashboard = () => {
                         Next
                     </button>
                 </div>
+
             </div>
         </div>
     );

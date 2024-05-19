@@ -61,7 +61,6 @@ const AdminBookings = () => {
     }
   };
 
-
   const handleDeleteBooking = async (bookingID) => {
     try {
       await axios.delete(`http://localhost:3002/bookings/${bookingID}`);
@@ -70,6 +69,22 @@ const AdminBookings = () => {
       console.error('Error deleting booking:', error);
     }
   };
+  const handleMarkAsOngoing = async (bookingID) => {
+    try {
+      const response = await axios.put(`http://localhost:3002/bookings/${bookingID}`, { status: 'ongoing' });
+      if (response.data) {
+        fetchBookings();
+      } else {
+        console.error('Invalid response data:', response.data);
+      }
+    } catch (error) {
+      console.error('Error marking booking as ongoing:', error);
+    }
+  };
+  const isPickupDatePassed = (pickupDate) => {
+    return new Date() > new Date(pickupDate);
+  };
+  
 
   return (
     <div className="admin-bookings">
@@ -84,7 +99,6 @@ const AdminBookings = () => {
             <th>Dropoff Date & Time</th>
             <th>Status</th>
             <th>Actions</th>
-       
           </tr>
         </thead>
         <tbody>
@@ -97,14 +111,14 @@ const AdminBookings = () => {
               <td>{new Date(booking.dropoffDate).toLocaleString()}</td>
               <td>{booking.status}</td>
               <td className="actions-container">
-                {booking.status === 'active' && (
-                  <>
-                    <button onClick={() => handleOpenUpdateModal(booking)}>Update</button>
-                    <button onClick={() => handleMarkAsCompleted(booking._id)}>Mark as Complete</button>
-                  </>
+                <button onClick={() => handleOpenUpdateModal(booking)}>Update</button>
+                <button onClick={() => handleMarkAsCompleted(booking._id)}>Mark as Complete</button>
+                 {/* Conditionally render "Mark as Ongoing" button if pickup date has passed and status is pending */}
+                 {isPickupDatePassed(booking.pickupDate) && booking.status === 'pending' && (
+                  <button onClick={() => handleMarkAsOngoing(booking._id)}>Mark as Ongoing</button>
                 )}
                 <button onClick={() => handleDeleteBooking(booking._id)}>Delete</button>
-              </td>        
+              </td>
             </tr>
           ))}
         </tbody>

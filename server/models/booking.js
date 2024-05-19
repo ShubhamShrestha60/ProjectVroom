@@ -20,8 +20,8 @@ const bookingSchema = new mongoose.Schema({
     LicensePhoto: String,
     status: {
         type: String,
-        enum: ['active', 'completed'],
-        default: 'active'
+        enum: ['pending', 'ongoing','completed'],
+        default: 'pending'
     },
     returnArrangement: {
         returnDate: String,

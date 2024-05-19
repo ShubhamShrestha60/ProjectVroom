@@ -9,6 +9,7 @@ const upload = multer({ dest: 'uploads/' });
 const Car = require('./models/carModel');
 const admModel = require('./models/admin');
 const bookingModel = require('./models/booking');
+const Notification=require('./models/Notification')
 const app = express();
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
@@ -291,7 +292,6 @@ app.post('/booking', upload.single('image'), async (req, res) => {
 });
 
 
-
 app.post('/bookingDetails', async (req, res) => {
     try {
         const { email } = req.body;
@@ -328,19 +328,29 @@ app.post('/bookedcarDetails', async (req, res) => {
 
 app.delete('/cancelBooking/:bookingID', async (req, res) => {
     try {
-        const bookingID = req.params.bookingID;
-        const cancelledBooking = await bookingModel.findOneAndDelete({ bookingID: bookingID });
-
+        const { bookingID } = req.params;
+        const cancelledBooking = await bookingModel.findOneAndDelete({bookingID : bookingID});
         if (!cancelledBooking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
 
-        res.json({ message: 'Booking cancelled successfully', cancelledBooking });
+        // Update car availability to true
+        const updatedCar = await Car.findOneAndUpdate(
+            { carID: cancelledBooking.carID },
+            { availability: true },
+            { new: true }
+        );
+
+        if (!updatedCar) {
+            return res.status(404).json({ error: 'Car not found' });
+        }
+
+        res.json({ message: 'Booking cancelled successfully and car availability updated', cancelledBooking, updatedCar });
     } catch (error) {
-        res.status(500).json({ message: 'Failed to cancel booking', error: error.message });
+        console.error('Error cancelling booking:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 
 
 
@@ -372,7 +382,7 @@ app.get("/bookings", async (req, res) => {
 // Update booking details
 app.put("/bookings/:bookingID", async (req, res) => {
     const { bookingID } = req.params;
-    const { pickupDate, pickupTime, dropoffDate, dropoffTime } = req.body;
+    const { pickupDate, pickupTime, dropoffDate, dropoffTime, status } = req.body; // Include status in destructuring
 
     try {
         const booking = await bookingModel.findById(bookingID);
@@ -380,10 +390,12 @@ app.put("/bookings/:bookingID", async (req, res) => {
             return res.status(404).json({ message: 'Booking not found' });
         }
 
-        booking.pickupDate = pickupDate;
-        booking.pickupTime = pickupTime;
-        booking.dropoffDate = dropoffDate;
-        booking.dropoffTime = dropoffTime;
+        // Update fields only if they are provided in the request body
+        if (pickupDate) booking.pickupDate = pickupDate;
+        if (pickupTime) booking.pickupTime = pickupTime;
+        if (dropoffDate) booking.dropoffDate = dropoffDate;
+        if (dropoffTime) booking.dropoffTime = dropoffTime;
+        if (status) booking.status = status; // Update status if provided
 
         await booking.save();
         res.json({ message: 'Booking updated successfully', booking });
@@ -403,9 +415,22 @@ app.put("/bookings/:bookingID/complete", async (req, res) => {
             return res.status(404).json({ message: 'Booking not found' });
         }
 
+        // Mark the booking as completed
         booking.status = 'completed';
         await booking.save();
-        res.json({ message: 'Booking marked as completed', booking });
+
+        // Update car availability to true
+        const updatedCar = await Car.findOneAndUpdate(
+            { carID: booking.carID },
+            { availability: true },
+            { new: true }
+        );
+
+        if (!updatedCar) {
+            return res.status(404).json({ error: 'Car not found' });
+        }
+
+        res.json({ message: 'Booking marked as completed and car availability updated', booking, updatedCar });
     } catch (error) {
         console.error('Error marking booking as completed:', error);
         res.status(500).json({ error: "Internal server error" });
@@ -420,7 +445,19 @@ app.delete('/bookings/:bookingID', async (req, res) => {
         if (!deletedBooking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
-        res.json({ message: 'Booking deleted successfully', deletedBooking });
+
+        // Update car availability to true
+        const updatedCar = await Car.findOneAndUpdate(
+            { carID: deletedBooking.carID },
+            { availability: true },
+            { new: true }
+        );
+
+        if (!updatedCar) {
+            return res.status(404).json({ error: 'Car not found' });
+        }
+
+        res.json({ message: 'Booking deleted successfully and car availability updated', deletedBooking, updatedCar });
     } catch (error) {
         console.error('Error deleting booking:', error);
         res.status(500).json({ error: 'Internal server error' });
@@ -452,6 +489,33 @@ app.put('/updateCar/:carID', async (req, res) => {
     }
 });
 
+app.use(bodyParser.json());
+
+app.post('/sendCancellationNotification', (req, res) => {
+    const { bookingID, message } = req.body;
+
+    Notification.create({ bookingID, message })
+        .then(() => {
+            res.status(200).json({ success: true, message: 'Cancellation notification sent.' });
+        })
+        .catch((err) => {
+            console.error('Error saving notification:', err);
+            res.status(500).json({ success: false, message: 'Failed to send cancellation notification.' });
+        });
+});
+
+// Add a new route to fetch notifications
+app.get('/notifications', async (req, res) => {
+    try {
+        // Fetch all notifications from the database
+        const notifications = await Notification.find();
+
+        res.json(notifications);
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 
 

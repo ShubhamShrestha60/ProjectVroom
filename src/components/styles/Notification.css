@@ -1,0 +1,79 @@
+/* Notification Container */
+.Notification {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-left: 260px; /* Adjust this value according to your sidebar width */
+    margin-top: 70px; /* Set margin-top to match the height of your top navigation bar */
+  }
+  
+  /* Heading Styles */
+  .Notification h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Notifications List */
+  .Notification ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .Notification li {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    transition: background-color 0.3s ease;
+  }
+  
+  .Notification li:last-child {
+    border-bottom: none;
+  }
+  
+  .Notification li:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+  
+  /* Notification Animation */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .Notification li {
+    animation: slideIn 0.5s ease forwards;
+  }
+  
+  /* Responsive Layout */
+  @media (max-width: 768px) {
+    .Notification {
+      padding: 15px;
+    }
+    .Notification h1 {
+      font-size: 24px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .Notification {
+      border-radius: 0;
+      border: none;
+    }
+    .Notification li {
+      padding: 10px 0;
+    }
+  }
+  

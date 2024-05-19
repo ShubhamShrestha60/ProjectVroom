@@ -276,6 +276,7 @@ export default function Booking(){
        formData.append('LicenseNumber', value.toString()); // Convert to string if necessary
        formData.append('ExpiryDate', expiryDate);
         formData.append('image', image); 
+        formData.append('status', 'pending');
         
         try {
             const response = await fetch('http://localhost:3002/booking', { 

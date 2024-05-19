@@ -16,7 +16,7 @@
 
 .dashboard__cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
   gap: 20px; /* Adjust the gap between grid items */
 }
 
@@ -76,6 +76,10 @@
 .total__card {
   background: #4caf50; /* Green background for the total cars card */
   color: #fff;
+  text-align: center;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
 }
 
 .total__card button {
@@ -91,11 +95,13 @@
 .total__card button:hover {
   background-color: #e0e0e0;
 }
+
 .pagination {
   display: flex;
   justify-content: center;
   margin-top: 20px;
 }
+
 .pagination button {
   padding: 8px 12px;
   margin: 0 5px;

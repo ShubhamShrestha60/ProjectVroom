@@ -7,7 +7,7 @@ import { Navbar } from "./components/Header/Navbar";
 import { Footer } from "./components/footer/footer";
 import Sidebar from "./components/Sidebar/Sidebar";
 import TopNav from "./components/TopNav/TopNav";
-
+import Notification from "./components/pages/Notification";
 import Dashboard from "./components/pages/Dashboard";
 import AddCar from "./components/pages/addCar";
 import AdminLogin from "./components/admin/adminLogin";
@@ -61,6 +61,7 @@ export default function App() {
           <Route path="/login" element={<Login  setIsLoggedIn={setIsLoggedIn}/>} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/available" element={<AvailableLayout />} />
+          <Route path="/notification" element={<NotificationLayout />} />
           <Route path="/carmanagement" element={<CarManagementLayout />} />
           <Route path="/adminbookings" element={<AdminBookingLayout />} />
           <Route path="/bookings" element={<AdminBookingLayout />} />
@@ -84,6 +85,16 @@ const AdminBookingLayout = () => {
     </>
   );
 };
+const NotificationLayout= ()=>{
+  return(
+    <>
+    <Sidebar />
+    <TopNav />
+    <Notification />
+    </>
+  )
+}
+
 const AvailableLayout = () => {
   return (
     <>

@@ -22,6 +22,11 @@ const navLinks = [
   path:'/carmanagement',
   display:"View Cars"
 },
+{
+  path:'/notification',
+  display:"Notification"
+},
+
 
 ];
 

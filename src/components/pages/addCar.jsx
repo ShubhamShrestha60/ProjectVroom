@@ -16,7 +16,6 @@ const AddCar = () => {
     const isAvailable = availability ? true : false;
     // Create FormData object to append form data
     const formData = new FormData();
-    formData.append('carID', e.target.carID.value);
     formData.append('brand', e.target.brand.value);
     formData.append('fuelType', e.target.fuelType.value);
     formData.append('transitionType', e.target.transitionType.value);
@@ -49,10 +48,6 @@ const AddCar = () => {
     <div className="add-car">
       <h3 className="add-car__title">Add a New Car</h3>
       <form className="add-car__form" onSubmit={handleSubmit}>
-        <div className="add-car__form-group">
-          <label htmlFor="carID">Car ID:</label>
-          <input type="number" id="carID" name="carID" />
-        </div>
         <div className="add-car__form-group">
           <label htmlFor="brand">Brand:</label>
           <input type="text" id="brand" name="brand" />

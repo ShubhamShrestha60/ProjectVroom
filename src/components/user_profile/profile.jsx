@@ -28,12 +28,12 @@ const Profile = () => {
         const fetchCarDetails = async () => {
             try {
                 if (BookingDetails && BookingDetails.length > 0) {
-                    const bookedcarDetailsPromises = BookingDetails.map(async (booking) => {
-                        const response = await axios.post('http://localhost:3002/bookedcarDetails', { carID: booking.carID });
-                        return response.data;
+                    const carDetailsPromises = BookingDetails.map(async (booking) => {
+                        const response = await axios.post('http://localhost:3002/carDetails', { carID: booking.carID });
+                        return { ...response.data, status: booking.status }; // Merge status from booking with car details
                     });
-                    const bookedcarDetails = await Promise.all(bookedcarDetailsPromises);
-                    setCarDetails(bookedcarDetails);
+                    const carDetails = await Promise.all(carDetailsPromises);
+                    setCarDetails(carDetails.filter(car => car)); // Filter out any potential null values
                 }
             } catch (error) {
                 console.error('Error fetching car details:', error);
@@ -55,19 +55,6 @@ const Profile = () => {
     };
 
 
-    const getStatus = (pickupDate, dropoffDate) => {
-        const now = new Date();
-        const pickupDateTime = new Date(pickupDate);
-        const dropoffDateTime = new Date(dropoffDate);
-
-        if (now < pickupDateTime) {
-            return 'Not Started';
-        } else if (now >= pickupDateTime && now < dropoffDateTime) {
-            return 'Ongoing';
-        } else {
-            return 'Completed';
-        }
-    };
    
     const handleAskDeletion = (bookingID) => {
         setAskDeletion(true);
@@ -78,6 +65,16 @@ const Profile = () => {
         try {
             const response = await axios.delete(`http://localhost:3002/cancelBooking/${bookingToDelete}`);
             console.log(response.data.message);
+            
+            // Send cancellation notification to the database
+        const cancellationNotification = {
+            bookingID: bookingToDelete,
+            message: 'Booking has been cancelled by the user.'
+        };
+
+        const notificationResponse = await axios.post('http://localhost:3002/sendCancellationNotification', cancellationNotification);
+        console.log(notificationResponse.data);
+
             setAskDeletion(false);
             setCancellationMessage(true);
         } catch (error) {
@@ -113,11 +110,11 @@ const Profile = () => {
                                 <p>Brand: {car.brand}</p>
                                 <p>Price: {car.price}/day</p>
 
-                                {BookingDetails && BookingDetails[index] && (
+                                 {BookingDetails && BookingDetails[index] && (
                                     <div>
-                                        <p>Status: {getStatus(BookingDetails[index].pickupDate, BookingDetails[index].dropoffDate)}</p>
-                                        {getStatus(BookingDetails[index].pickupDate, BookingDetails[index].dropoffDate) === 'Not Started' && (
-                                            <button className="booking_delete" onClick={() => handleAskDeletion(BookingDetails[index].bookingID)}>Cancel Booking</button>
+                                       <p>Status: {car.status}</p> {/* Display fetched status */}
+                                        {car.status === 'pending' && (
+                                           <button className="booking_delete" onClick={() => handleAskDeletion(BookingDetails[index].bookingID)}>Cancel Booking</button>
                                         )}
                                     </div>
                                 )}
