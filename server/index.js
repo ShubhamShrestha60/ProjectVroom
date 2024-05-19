@@ -334,9 +334,11 @@ app.delete('/cancelBooking/:bookingID', async (req, res) => {
             return res.status(404).json({ message: 'Booking not found' });
         }
 
+        const { carID } = cancelledBooking;
+
         // Update car availability to true
         const updatedCar = await Car.findOneAndUpdate(
-            { carID: booking.carID },
+            { carID: carID },
             { availability: true },
             { new: true }
         );
