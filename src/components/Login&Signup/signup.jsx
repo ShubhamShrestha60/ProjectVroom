@@ -43,8 +43,9 @@ export default function Test() {
 
 
   const displayPasswordStrength = (password) => {
-    // Your password strength logic here
-    // Example: You can check the length of the password and render a message based on its strength
+    if (!password) {
+      return null; // Return null if the password is empty to avoid displaying any strength message
+    }
     if (password.length < 8) {
       return <p style={{color:"red"}}>Weak</p>;
     } else if (password.length < 12) {
