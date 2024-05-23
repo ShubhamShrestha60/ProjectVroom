@@ -82,15 +82,15 @@ const Filter = ({ filters, onFilterChange }) => {
                   type="checkbox"
                   id="petrol"
                   style={{marginLeft:"3vw"}} 
-                  checked={filters.fuelTypes.includes("Petrol")}
-                  onChange={() => handleCheckboxChange("fuelTypes", "Petrol")}
+                  checked={filters.fuelTypes.includes("petrol")}
+                  onChange={() => handleCheckboxChange("fuelTypes", "petrol")}
             /> <label htmlFor="">Petrol</label> <br />
             <input
                   type="checkbox"
                   id="diesel"
                   style={{marginLeft:"3vw"}} 
-                  checked={filters.fuelTypes.includes("Diesel")}
-                  onChange={() => handleCheckboxChange("fuelTypes", "Diesel")}
+                  checked={filters.fuelTypes.includes("diesel")}
+                  onChange={() => handleCheckboxChange("fuelTypes", "diesel")}
             /> <label htmlFor="">Diesel</label>
             
             </section>
@@ -102,15 +102,15 @@ const Filter = ({ filters, onFilterChange }) => {
                type="checkbox"
                id="manual"
                style={{marginLeft:"3vw"}} 
-               checked={filters.transitionTypes.includes("Manual")}
-               onChange={() => handleCheckboxChange("transitionTypes", "Manual")}
+               checked={filters.transitionTypes.includes("manual")}
+               onChange={() => handleCheckboxChange("transitionTypes", "manual")}
               /> <label htmlFor="">Manual</label><br />
               <input
                type="checkbox"
                id="automatic"
                style={{marginLeft:"3vw"}} 
-               checked={filters.transitionTypes.includes("Automatic")}
-               onChange={() => handleCheckboxChange("transitionTypes", "Automatic")}
+               checked={filters.transitionTypes.includes("automatic")}
+               onChange={() => handleCheckboxChange("transitionTypes", "automatic")}
               /><label htmlFor="">Automatic</label> <br />
             </section>
 
