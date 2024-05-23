@@ -7,17 +7,17 @@ const AddCar = () => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState(null);
 
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     
-    const availability =e.target.availability.checked;
+    const availability = e.target.availability.checked;
     const isAvailable = availability ? true : false;
+    
     // Create FormData object to append form data
     const formData = new FormData();
     formData.append('brand', e.target.brand.value.toLowerCase());
@@ -44,12 +44,15 @@ const AddCar = () => {
       if (response.ok) {
           const data = await response.json();
           setConfirmationMessage('Car added successfully: ' + data.car);
-          console.log('car added successfully: '+data.car);
+          console.log('car added successfully: ' + data.car);
+          window.alert('Car added successfully: ' + data.car);
       } else {
          setConfirmationMessage('Failed to add car: ' + response.statusText);
+         window.alert('Failed to add car: ' + response.statusText);
       }
     } catch (error) {
        setConfirmationMessage('Failed to add car: ' + error.message);
+       window.alert('Failed to add car: ' + error.message);
     } finally {
        setShowModal(false);
     }
@@ -120,8 +123,7 @@ const AddCar = () => {
         </div>
       )}
     </div>
-    
   );
 };
- 
+
 export default AddCar;
