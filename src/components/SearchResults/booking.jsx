@@ -54,7 +54,7 @@ export default function Booking() {
             setTimes(filteredTimes);
         };
         fetchAvailableTimes();
-    }, [currentDate]);
+    }, []);
 
     const togglePickupCalendar = () => setShowPickupCalendar(!showPickupCalendar);
     const toggleDropoffCalendar = () => setShowDropoffCalendar(!showDropoffCalendar);
