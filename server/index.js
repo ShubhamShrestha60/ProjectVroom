@@ -247,13 +247,20 @@ app.post('/carDetails', async (req, res) => {
 });
 
 
-const sendBookingSuccessEmail = async (email, bookingID) => {
+const sendBookingSuccessEmail = async (email, bookingID, pickupDate,pickupTime) => {
     try {
+        
+        const date = new Date(pickupDate);
+        const formattedDate = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
         const mailOptions = {
             from: "pratikpanthi100@gmail.com",
             to: email,
             subject: "Booking Successful",
-            html: `<p>Your booking was successful. Your booking ID is ${bookingID}.</p>`
+            html: `<p>Your booking was successful for ${formattedDate} on ${pickupTime}. Your booking ID is ${bookingID}. Vroom request you to be on time.</p>`
         };
 
         await transporter.sendMail(mailOptions);
@@ -271,7 +278,7 @@ app.post('/booking', upload.single('image'), async (req, res) => {
         const newBooking = new bookingModel({ email, carID, pickupLocation, dropoffLocation, pickupDate, pickupTime, dropoffDate, dropoffTime, LicenseNumber, ExpiryDate, LicensePhoto });
         await newBooking.save();
         
-        await sendBookingSuccessEmail(email, newBooking.bookingID);
+        await sendBookingSuccessEmail(email, newBooking.bookingID,pickupDate,pickupTime);
         res.status(201).json({ message: 'Booking Successfull', booking: newBooking });
 
         // Update car availability to false
@@ -290,6 +297,30 @@ app.post('/booking', upload.single('image'), async (req, res) => {
         res.status(500).json({ error: 'internal server error' });
     }
 });
+
+
+app.get('/check-car-availability/:carID', async (req, res) => {
+    try {
+        const carID = req.params.carID;
+        const car = await Car.findOne({ carID: carID });
+
+        if (!car) {
+            return res.status(404).json({ error: 'Car not found' });
+        }
+
+        if (car.availability) {
+            return res.status(200).json({ available: true });
+        } else {
+            return res.status(200).json({ available: false });
+        }
+    } catch (error) {
+        console.error('Error checking car availability:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+
 
 
 app.post('/bookingDetails', async (req, res) => {
