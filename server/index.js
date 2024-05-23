@@ -180,7 +180,7 @@ app.post('/signup', (req, res) => {
         return res.status(400).json("Passwords do not match");
     }
 
-    userModel.create(req.body)
+    admModel.create(req.body)
         .then(admin => res.json(admin))
         .catch(err => res.status(500).json(err));
 });
