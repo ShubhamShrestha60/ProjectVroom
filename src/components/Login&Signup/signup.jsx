@@ -4,7 +4,6 @@ import logo from "./logo.png";
 import { Link } from "react-router-dom";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-import { Component } from "react";
 // gi is sort name of game icon.
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 

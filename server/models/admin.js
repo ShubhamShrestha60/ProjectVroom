@@ -6,6 +6,14 @@ const admSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName:{
+        type: String,
+        required: true,
+    },
     password: {
         type: String,
         required: true
@@ -18,14 +26,7 @@ const admSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    dateOfBirth: {
-        type: Date,
-        required: true
-    },
-    gender: {
-        type: String,
-        required: true
-    }
+
 });
 
 const admModel = mongoose.model('Admin', admSchema);

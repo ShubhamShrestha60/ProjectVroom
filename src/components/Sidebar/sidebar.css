@@ -56,6 +56,7 @@
 
 .nav__link,
 .sidebar__bottom span {
+  color: white;
   display: flex;
   align-items: center;
   column-gap: 5px;

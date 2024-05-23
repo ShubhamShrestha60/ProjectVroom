@@ -20,14 +20,14 @@ const AddCar = () => {
     const isAvailable = availability ? true : false;
     // Create FormData object to append form data
     const formData = new FormData();
-    formData.append('brand', e.target.brand.value);
-    formData.append('fuelType', e.target.fuelType.value);
-    formData.append('transitionType', e.target.transitionType.value);
-    formData.append('segment', e.target.segment.value);
-    formData.append('price', e.target.price.value);
-    formData.append('location', e.target.location.value);
+    formData.append('brand', e.target.brand.value.toLowerCase());
+    formData.append('fuelType', e.target.fuelType.value.toLowerCase());
+    formData.append('transitionType', e.target.transitionType.value.toLowerCase());
+    formData.append('segment', e.target.segment.value.toLowerCase());
+    formData.append('price', e.target.price.value.toLowerCase());
+    formData.append('location', e.target.location.value.toLowerCase());
     formData.append('availability', isAvailable);
-    formData.append('condition', e.target.condition.value);
+    formData.append('condition', e.target.condition.value.toLowerCase());
     formData.append('image', image); // Append image file
     
     setFormData(formData);
@@ -58,7 +58,6 @@ const AddCar = () => {
   const handleCancelSubmit = () => {
     setShowModal(false);
   };
-
 
   return (
     <div className="add-car">
@@ -119,10 +118,6 @@ const AddCar = () => {
             <button onClick={handleCancelSubmit}>Cancel</button>
           </div>
         </div>
-      )}
-
-      {confirmationMessage && (
-        <div className="confirmation-message">{confirmationMessage}</div>
       )}
     </div>
     

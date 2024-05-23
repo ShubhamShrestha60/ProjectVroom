@@ -1,50 +1,97 @@
-
+/* adminSignup.css */
 
 .adminsignup-form {
   max-width: 400px;
   margin: 0 auto;
-  padding: 20px;
-
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: maroon;
+  padding-right: 30px;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .adminsignup-form h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
   text-align: center;
-  color: white;
+  margin-bottom: 20px;
+  color: white ;
 }
 
-.adminsignup-form input {
+.adminsignup-form input[type="email"],
+.adminsignup-form input[type="text"], /* Changed to handle firstName and lastName */
+.adminsignup-form input[type="password"],
+.adminsignup-form input[type="tel"] {
   width: 100%;
-  padding: 10px;
+  height: 40px;
   margin-bottom: 15px;
+  padding: 0 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-size: 16px;
 }
 
-.adminsignup-form input[type="submit"] {
-  background-color: #022f88;
-  color: #1a49d8;
-  font-size: 16px;
-  font-weight: bold;
+.adminsignup-form button[type="submit"] {
+  width: 100%;
+  height: 40px;
+  background-color: #4267B2;
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
 }
 
-.adminsignup-form input[type="submit"]:hover {
+.adminsignup-form button[type="submit"]:hover {
   background-color: #3b5998;
 }
 
 .adminsignup-form p {
   text-align: center;
-  color:white;
+  margin-top: 10px;
+  font-size: 14px;
+  color: white;
 }
 
-.adminsignup-form a {
+.adminsignup-form p span {
   color: #4267B2;
+}
+
+.adminsignup-form .col {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.adminsignup-form .col p {
+  color: white;
+  font-size: 14px;
+}
+
+.adminsignup-form .col p span {
+  color: #5CB3FF;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.adminsignup-form .col p span:hover {
+  text-decoration: underline;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  padding-right: 2.5rem; /* Adjust as needed to make space for the icon */
+}
+
+.password-input .toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem; /* Adjust as needed to position the icon */
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
 }
