@@ -160,7 +160,7 @@ const Detail = () => {
                         </div>
 
                         <div className='fuel_type'>
-                        <h4>Condition</h4>
+                        <h4>Fuel Type</h4>
                         <p>{carDetails.fuelType}</p>
                         </div>
 
