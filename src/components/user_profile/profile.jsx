@@ -78,18 +78,16 @@ const Profile = () => {
 
             setAskDeletion(false);
             setCancellationMessage(true);
+            
         } catch (error) {
             console.error('Error canceling booking:', error);
         }
     };
 
-    
-
-
-
 
     const handleAcknowledgeCancellation = () => {
         setCancellationMessage(false);
+        window.location.reload();
     };
     
     return (

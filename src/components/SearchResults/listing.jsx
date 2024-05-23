@@ -44,6 +44,7 @@ const Listing = ({ results }) => {
       gridTemplateRows: "1fr",
       marginTop: "-100px",
     },
+
   };
 
   return (
