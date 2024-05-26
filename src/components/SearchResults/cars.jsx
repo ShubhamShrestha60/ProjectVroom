@@ -23,11 +23,11 @@ const Cars = ({ results }) => {
 
   const filterResults = () => {
     let filteredResults = [...results];
-    
+
     if (!Array.isArray(filteredResults)) {
       filteredResults = [];
     }
-    
+
     if (filters.segments.length > 0) {
       filteredResults = filteredResults.filter((car) =>
         filters.segments.includes(car.segment)
@@ -48,47 +48,47 @@ const Cars = ({ results }) => {
 
     return filteredResults;
   };
-  
 
-    const styles = {
-          
-          submain:{
-             
-            display:"flex",
-            flexDirection:"row",
-            width:"100%",
-            
-          },
 
-          filter:{
-             
-            flex:"0.4",
-            
-         
-          },
+  const styles = {
 
-          listing:{
-            flex:"1.5"
-          }
-    };
+    submain: {
 
-    return (
-      
-        <div style={{width:"100%"}}>
-             
-             <div className="submain" style={styles.submain}>
-             <div className="filter" style={styles.filter}>
-             <Filter
+      display: "flex",
+      flexDirection: "row",
+      width: "100%",
+
+    },
+
+    filter: {
+
+      flex: "0.4",
+
+
+    },
+
+    listing: {
+      flex: "1.5"
+    }
+  };
+
+  return (
+
+    <div style={{ width: "100%" }}>
+
+      <div className="submain" style={styles.submain}>
+        <div className="filter" style={styles.filter}>
+          <Filter
             filters={filters}
             onFilterChange={handleFilterChange}
           />
-             </div>
-             <div className="listing" style={styles.listing}>
-             <Listing results={filterResults()} />
-             </div>
-             </div>  
         </div>
-    );
+        <div className="listing" style={styles.listing}>
+          <Listing results={filterResults()} />
+        </div>
+      </div>
+    </div>
+  );
 };
 Cars.propTypes = {
   results: PropTypes.array.isRequired,

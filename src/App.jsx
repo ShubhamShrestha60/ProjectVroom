@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from './components/home/home';
 import Login from './components/Login&Signup/login';
 import Signup from './components/Login&Signup/signup';
@@ -20,10 +20,12 @@ import Detail from "./components/SearchResults/detail";
 import AdminBookings from "./components/pages/adminBookings";
 import CarManagement from "./components/pages/carManagement";
 
-
 export default function App() {
   const [results, setResults] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(
+    localStorage.getItem("isAdminLoggedIn") === "true"
+  );
 
   useEffect(() => {
     const loggedInStatus = localStorage.getItem("isLoggedIn");
@@ -44,31 +46,36 @@ export default function App() {
       }
     }
   }, []);
+
   return (
     <div>
       <BrowserRouter>
         <Navbar isLoggedIn={isLoggedIn} />
         <Routes>
-         <Route path="/" element = {<Home setResults={setResults} />}/>
-         <Route path="/home" element = {<Home setResults={setResults} />}/>
-         <Route
-          path="/cars"
-          element={<Cars results={results} />}
-        />
-        <Route path="/detail/:carID" element={<Detail />} />
-        <Route path="/booking" element={<Bookings />} />
-      
+          <Route path="/" element={<Home setResults={setResults} />} />
+          <Route path="/home" element={<Home setResults={setResults} />} />
+          <Route path="/cars" element={<Cars results={results} />} />
+          <Route path="/detail/:carID" element={<Detail />} />
+          <Route path="/booking" element={<Bookings />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login  setIsLoggedIn={setIsLoggedIn}/>} />
+          <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/available" element={<AvailableLayout />} />
-          <Route path="/addcar" element={<AddCarLayout />} />
-          <Route path="/dashboard" element={<DashboardLayout />} />
-          <Route path="/notification" element={<NotificationLayout />} />
-          <Route path="/carManagement" element={<CarManagementLayout />} />
-          <Route path="/adminBookings" element={<AdminBookingLayout />} />
+
+          {isAdminLoggedIn ? (
+            <>
+              <Route path="/available" element={<AvailableLayout />} />
+              <Route path="/addcar" element={<AddCarLayout />} />
+              <Route path="/dashboard" element={<DashboardLayout />} />
+              <Route path="/notification" element={<NotificationLayout />} />
+              <Route path="/carManagement" element={<CarManagementLayout />} />
+              <Route path="/adminBookings" element={<AdminBookingLayout />} />
+            </>
+          ) : (
+            <Route path="*" element={<Navigate to="/adminLogin" />} />
+          )}
+
           <Route path="/adminSignup" element={<AdminSignup />} />
-          <Route path="/adminLogin" element={<AdminLogin />} />
+          <Route path="/adminLogin" element={<AdminLogin setIsAdminLoggedIn={setIsAdminLoggedIn} />} />
         </Routes>
         <Footer />
       </BrowserRouter>
@@ -85,15 +92,15 @@ const AdminBookingLayout = () => {
     </>
   );
 };
-const NotificationLayout= ()=>{
-  return(
+const NotificationLayout = () => {
+  return (
     <>
-    <Sidebar />
-    <TopNav />
-    <Notification />
+      <Sidebar />
+      <TopNav />
+      <Notification />
     </>
-  )
-}
+  );
+};
 
 const AvailableLayout = () => {
   return (
@@ -109,7 +116,7 @@ const CarManagementLayout = () => {
     <>
       <Sidebar />
       <TopNav />
-      < CarManagement/>
+      <CarManagement />
     </>
   );
 };

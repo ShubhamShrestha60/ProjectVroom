@@ -5,6 +5,7 @@ import "./sidebar.css";
 
 const Sidebar = () => {
   const handleLogout = () => {
+    localStorage.setItem("isAdminLoggedIn", false);
   };
 
   return (
@@ -40,7 +41,7 @@ const Sidebar = () => {
         <div className="sidebar__bottom">
           {/* Use NavLink directly for logout with 'to' prop */}
           <NavLink to="/adminlogin" className="nav__link" onClick={handleLogout}>
-            <span>
+            <span onClick={handleLogout}>
               <i className="ri-logout-circle-r-line"></i> Logout
             </span>
           </NavLink>

@@ -15,7 +15,7 @@ const Filter = ({ filters, onFilterChange }) => {
             
             display:"grid",
             gridTemplateRows:"150px 150px 150px",
-            borderRight:"3px solid black",
+            borderRight:"1px solid black",
             
             boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", 
             color:"black",
@@ -48,7 +48,7 @@ const Filter = ({ filters, onFilterChange }) => {
 
             <section className='segments' style={styles.segments}>
                 
-            <h3 style={{color:"black",paddingLeft:"3vw",borderBottom:"2px solid black",paddingBottom:"10px"}}>Segments</h3>
+            <h3 style={{color:"black",paddingLeft:"3vw",borderBottom:"1px solid black",paddingBottom:"10px"}}>Segments</h3>
             <input
                type="checkbox"
                id="hatchback"
@@ -76,7 +76,7 @@ const Filter = ({ filters, onFilterChange }) => {
 
             <section className='fuel_type' style={styles.fuel_type}>
               
-            <h3 style={{color:"black",paddingLeft:"3vw",borderBottom:"2px solid black",paddingBottom:"10px"}}>Fuel</h3>
+            <h3 style={{color:"black",paddingLeft:"3vw",borderBottom:"1px solid black",paddingBottom:"10px"}}>Fuel</h3>
             
             <input
                   type="checkbox"
@@ -97,7 +97,7 @@ const Filter = ({ filters, onFilterChange }) => {
 
             <section className='car_type' style={styles.car_type}>
               
-            <h3 style={{color:"black",paddingLeft:"3vw",borderBottom:"2px solid black",paddingBottom:"10px"}}>Transistion</h3>
+            <h3 style={{color:"black",paddingLeft:"3vw",borderBottom:"1px solid black",paddingBottom:"10px"}}>Transistion</h3>
               <input
                type="checkbox"
                id="manual"

@@ -88,7 +88,7 @@
 
 .password-input .toggle-password {
   position: absolute;
-  top: 50%;
+  top: 38%;
   right: 0.5rem; /* Adjust as needed to position the icon */
   transform: translateY(-50%);
   background: none;

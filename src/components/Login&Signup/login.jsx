@@ -72,6 +72,9 @@ const togglePasswordVisibility = () => {
                 navigate('/home'); // Navigate to home page upon successful login
             }, 2000); // Hide popup after 3 seconds
         }
+        else{
+          window.alert("Please verify the email first");
+        }
     })
     .catch(err => console.log(err));
   };

@@ -75,6 +75,7 @@ const AddCar = () => {
           setConfirmationMessage('Car added successfully: ' + data.car);
           console.log('Car added successfully: ' + data.car);
           window.alert('Car added successfully: ' + data.car);
+          window.location.reload();
       } else {
          setConfirmationMessage('Failed to add car: ' + response.statusText);
          window.alert('Failed to add car: ' + response.statusText);

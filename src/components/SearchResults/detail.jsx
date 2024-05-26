@@ -78,7 +78,9 @@ const Detail = () => {
            borderRadius: "5px" ,
            display:'grid',
            gridTemplateRows:"1fr 0.1fr",
+
            },
+           
            text_part:{
                  textAlign:"center"
            
